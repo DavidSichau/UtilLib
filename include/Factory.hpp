@@ -67,7 +67,45 @@ protected:
     }
 };
 
-/** Factory implementation, following [Alexandescu, 2002].
+/**
+ * Factory implementation, following [Alexandescu, 2002].
+ *
+ * To generate a factory do a typedef like that:
+ *
+ * @code
+ * typedef UtilLib::Singleton<UtilLib::Factory<CDESolver, std::string> >SolverFactory;
+ * @endcode
+ * This code generates a factory of CDESolvers as an Singleton.
+ *
+ * To register your class in the Factory use this code in the header:
+ * @code
+ * static CDESolver* create()
+ *   {
+ *       return new CDESolver;
+ *   }
+ * static const bool registerLoader();
+ * static const bool registered_;
+ * @endcode
+ * And in the implementation do this:
+ * @code
+ * const bool CDESolver::registerLoader()
+ * {
+ *    return SolverFactory::instance().registerType(NAME, CDESolver::create);
+ * }
+ *
+ * const bool CDESolver::registered_ = CDESolver::registerLoader();
+ * @endcode
+ * Where NAME is replaced by your string identifier for this class
+ *
+ * Additional your class should protect the Constructor by making it either private
+ * or protected.
+ * Provide a static create method which returns a pointer to this class which is
+ * then registered in the factory.
+ *
+ * To instantiate an object use this code:
+ * @code
+ *    SolverFactory::instance().createObject(cdeSolverName);
+ * @endcode
  */
 template<
         class AbstractProduct,
