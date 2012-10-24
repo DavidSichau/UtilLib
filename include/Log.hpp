@@ -17,8 +17,8 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef MPILIB_UTILITIES_LOG_HPP_
-#define MPILIB_UTILITIES_LOG_HPP_
+#ifndef UTILIB_LOG_HPP_
+#define UTILIB_LOG_HPP_
 
 #include <iostream>
 #include <memory>
@@ -228,4 +228,4 @@ else UtilLib::Log().writeReport(level)
 
 
 
-#endif /* MPILIB_UTILITIES_LOG_HPP_ */
+#endif /* UTILIB_LOG_HPP_ */

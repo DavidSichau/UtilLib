@@ -24,6 +24,7 @@ set(UTILLIB_SRCS
 set(UTILLIB_HEADER
 
     include/Exception.hpp
+    include/Factory.hpp
     include/ProgressBar.hpp
     include/MPIProxy.hpp
     include/Log.hpp

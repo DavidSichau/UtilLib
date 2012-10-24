@@ -134,6 +134,7 @@ INCLUDE_DIRECTORIES(
 message(STATUS "=== Unit tests ===")
 
 ADD_TEST_FILE( Exception_test.cpp)
+ADD_TEST_FILE (Factory_test.cpp)
 ADD_MPI_TEST( Log_test.cpp)
 ADD_MPI_TEST( MPIProxy_test.cpp)
 ADD_TEST_FILE(Singleton_test.cpp)
