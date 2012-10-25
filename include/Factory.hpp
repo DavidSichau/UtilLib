@@ -153,7 +153,7 @@ public:
         }
         return this->onUnknownType(id);
     }
-public:
+private:
     /** Define a type that maps between type ids
      * and the pointers to their creation methods.
      */
