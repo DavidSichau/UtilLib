@@ -126,8 +126,7 @@ public:
     bool registerType(const IdentifierType& id,
                       ProductCreatorSignature creator)
     {
-        return productMap_.insert(
-                    typename ProductMap::value_type(id, creator)).second;
+        return productMap_.insert(typename ProductMap::value_type(id, creator)).second;
     }
 
     /** Unregisters a type.
