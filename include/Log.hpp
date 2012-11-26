@@ -99,118 +99,118 @@ namespace UtilLib{
  *
  * \section provided_debug_levels Provided Debug levels
  *
- * <dl>
- * <dt>logERROR</dt>
- * <dd>Only use this for real error messages, as these are always logged.</dd>
- * <dt>logWARNING</dt>
- * <dd>use this for warnings messages.</dd>
- * <dt>logINFO</dt>
- * <dd>Use this for information messages</dd>
- * <dt>logDEBUG</dt>
- * <dd>Use this for very important debug messages</dd>
- * <dt>logDEBUG1</dt>
- * <dd>Use this for important debug messages</dd>
- * <dt>logDEBUG2</dt>
- * <dd>Use this for not so important debug messages</dd>
- * <dt>logDEBUG3</dt>
- * <dd>Use this for not important debug messages</dd>
- * <dt>logDEBUG4</dt>
- * <dd>Use this for for every debug detail messages</dd>
- * </dl>
- *
- */
+    * <dl>
+        * <dt>logERROR</dt>
+        * <dd>Only use this for real error messages, as these are always logged.</dd>
+        * <dt>logWARNING</dt>
+        * <dd>use this for warnings messages.</dd>
+        * <dt>logINFO</dt>
+        * <dd>Use this for information messages</dd>
+        * <dt>logDEBUG</dt>
+        * <dd>Use this for very important debug messages</dd>
+        * <dt>logDEBUG1</dt>
+        * <dd>Use this for important debug messages</dd>
+        * <dt>logDEBUG2</dt>
+        * <dd>Use this for not so important debug messages</dd>
+        * <dt>logDEBUG3</dt>
+        * <dd>Use this for not important debug messages</dd>
+        * <dt>logDEBUG4</dt>
+        * <dd>Use this for for every debug detail messages</dd>
+        * </dl>
+        *
+        */
 
-/**
- * The log levels for more details see \ref provided_error_levels
- */
-enum LogLevel {
-    logERROR,  //!< logERROR
-    logWARNING,//!< logWARNING
-    logINFO,   //!< logINFO
-    logDEBUG,  //!< logDEBUG
-    logDEBUG1, //!< logDEBUG1
-    logDEBUG2, //!< logDEBUG2
-    logDEBUG3, //!< logDEBUG3
-    logDEBUG4  //!< logDEBUG4
-};
-
-/**
- * @brief class for logging reports. The usage of this log class is described on page \ref logging
- */
-class Log {
-public:
-    /**
-     * default constructor
-     */
-    Log()=default;
-    /**
-     * copy constructor deleted
-     */
-    Log(const Log&)=delete;
-    /**
-     * copy operator deleted
-     */
-    Log& operator =(const Log&)=delete;
-    /**
-     * destructor which writes the message to the stream
-     */
-    virtual ~Log();
+        /**
+         * The log levels for more details see \ref provided_error_levels
+         */
+        enum LogLevel {
+            logERROR,  //!< logERROR
+            logWARNING,//!< logWARNING
+            logINFO,   //!< logINFO
+            logDEBUG,  //!< logDEBUG
+            logDEBUG1, //!< logDEBUG1
+            logDEBUG2, //!< logDEBUG2
+            logDEBUG3, //!< logDEBUG3
+            logDEBUG4  //!< logDEBUG4
+        };
 
     /**
-     * takes the log message and stores it in the buffer
-     * @param level The level of the log message
-     * @return  a ostringstream
+     * @brief class for logging reports. The usage of this log class is described on page \ref logging
      */
-    std::ostringstream& writeReport(LogLevel level = logINFO);
+    class Log {
+     public:
+      /**
+       * default constructor
+       */
+      Log()=default;
+      /**
+       * copy constructor deleted
+       */
+      Log(const Log&)=delete;
+      /**
+       * copy operator deleted
+       */
+      Log& operator =(const Log&)=delete;
+      /**
+       * destructor which writes the message to the stream
+       */
+      virtual ~Log();
 
-    /**
-     * The Stream it writes to the standard is std::cerr
-     * @return The Stream it writes to
-     */
-    static std::shared_ptr<std::ostream> getStream();
+      /**
+       * takes the log message and stores it in the buffer
+       * @param level The level of the log message
+       * @return  a ostringstream
+       */
+      std::ostringstream& writeReport(LogLevel level = logINFO);
 
-    /**
-     * Setter for the stream
-     * @param pStream The Stream the log class should print to.
-     */
-    static void setStream(std::shared_ptr<std::ostream> pStream);
+      /**
+       * The Stream it writes to the standard is std::cerr
+       * @return The Stream it writes to
+       */
+      static std::shared_ptr<std::ostream> getStream();
 
-    /**
-     * getter for the current report level
-     * @return the current report level
-     */
-    static LogLevel getReportingLevel();
+      /**
+       * Setter for the stream
+       * @param pStream The Stream the log class should print to.
+       */
+      static void setStream(std::shared_ptr<std::ostream> pStream);
 
-    /**
-     * setter for the report level
-     * @param level The new report level
-     */
-    static void setReportingLevel(LogLevel level);
+      /**
+       * getter for the current report level
+       * @return the current report level
+       */
+      static LogLevel getReportingLevel();
 
-private:
+      /**
+       * setter for the report level
+       * @param level The new report level
+       */
+      static void setReportingLevel(LogLevel level);
+
+     private:
 
 
-    /**
-     * writes the output to the stream
-     * @param msg The message written to the stream
-     */
-    static void writeOutput(const std::string& msg);
+      /**
+       * writes the output to the stream
+       * @param msg The message written to the stream
+       */
+      static void writeOutput(const std::string& msg);
 
-    /**
-     * The current reporting level of the Log, all messages with a level below this level
-     * are printed the rest is ignored
-     */
-    static LogLevel _reportingLevel;
+      /**
+       * The current reporting level of the Log, all messages with a level below this level
+       * are printed the rest is ignored
+       */
+      static LogLevel _reportingLevel;
 
-    /**
-     * pointer to the stream
-     */
-    static std::shared_ptr<std::ostream> _pStream;
-    /**
-     * The buffer for the log message
-     */
-    std::ostringstream _buffer;
-};
+      /**
+       * pointer to the stream
+       */
+      static std::shared_ptr<std::ostream> _pStream;
+      /**
+       * The buffer for the log message
+       */
+      std::ostringstream _buffer;
+    };
 
 
 } /* end namespace */
@@ -223,7 +223,7 @@ private:
  *
  */
 #define LOG(level) \
-if (level > UtilLib::Log::getReportingLevel() || !UtilLib::Log::getStream()) ; \
+    if (level > UtilLib::Log::getReportingLevel() || !UtilLib::Log::getStream()) ; \
 else UtilLib::Log().writeReport(level)
 
 

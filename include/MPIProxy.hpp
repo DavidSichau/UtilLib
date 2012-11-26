@@ -43,87 +43,87 @@ namespace UtilLib {
  * by this class
  */
 class MPIProxy_ {
-public:
-    /**
-     * destructor
-     */
-    virtual ~MPIProxy_();
+ public:
+  /**
+   * destructor
+   */
+  virtual ~MPIProxy_();
 
-    /**
-     * wrapper method to return the process id, if mpi is disabled it returns 0
-     * @return the world rank of a process
-     */
-    int getRank() const;
+  /**
+   * wrapper method to return the process id, if mpi is disabled it returns 0
+   * @return the world rank of a process
+   */
+  int getRank() const;
 
-    /**
-     * wrapper method to return the size, if MPI is disabled it returns 1
-     * @return
-     */
-    int getSize() const;
+  /**
+   * wrapper method to return the size, if MPI is disabled it returns 1
+   * @return
+   */
+  int getSize() const;
 
-    /**
-     * wrapper for mpi barrier
-     */
-    void barrier();
+  /**
+   * wrapper for mpi barrier
+   */
+  void barrier();
 
-    /**
-     * waits until all request stored in the vector _mpiStatus are finished
-     */
-    void waitAll();
+  /**
+   * waits until all request stored in the vector _mpiStatus are finished
+   */
+  void waitAll();
 
-    /**
-     * Broadcast the value from root
-     * @param value The value to be broadcast
-     * @param root The root process
-     */
-    template<typename T>
-    void broadcast(T& value, int root);
+  /**
+   * Broadcast the value from root
+   * @param value The value to be broadcast
+   * @param root The root process
+   */
+  template<typename T>
+void broadcast(T& value, int root);
 
-    /**
-     * asynchronous receive operation the mpi status is stored in _mpiStatus
-     * @param source The source of the message
-     * @param tag The tag of the message
-     * @param value The value received
-     */
-    template<typename T>
-    void irecv(int source, int tag, T& value) const;
+  /**
+   * asynchronous receive operation the mpi status is stored in _mpiStatus
+   * @param source The source of the message
+   * @param tag The tag of the message
+   * @param value The value received
+   */
+  template<typename T>
+void irecv(int source, int tag, T& value) const;
 
-    /**
-     * asynchronous send operation the mpi status is stored in _mpiStatus
-     * @param dest The destination of the message
-     * @param tag The tag of the message
-     * @param value The value sended
-     */
-    template<typename T>
-    void isend(int dest, int tag, const T& value) const;
+  /**
+   * asynchronous send operation the mpi status is stored in _mpiStatus
+   * @param dest The destination of the message
+   * @param tag The tag of the message
+   * @param value The value sended
+   */
+  template<typename T>
+void isend(int dest, int tag, const T& value) const;
 
 
-private:
-    /**
-     * Declare the Singleton class a friend to allow construction of the MPIProxy_ class
-     */
-    friend class Singleton<MPIProxy_>;
-    /**
-     * constructor sets the MPI rank and size
-     */
-    MPIProxy_();
+ private:
+  /**
+   * Declare the Singleton class a friend to allow construction of the MPIProxy_ class
+   */
+  friend class Singleton<MPIProxy_>;
+  /**
+   * constructor sets the MPI rank and size
+   */
+  MPIProxy_();
 
 #ifdef ENABLE_MPI
-    /**
-     * stores the mpi statuses
-     */
-    static std::vector<boost::mpi::request> _mpiStatus;
+  /**
+   * stores the mpi statuses
+   */
+  static std::vector<boost::mpi::request> _mpiStatus;
 #endif
 
-    /**
-     * storage of the rank to avoid function calls
-     */
-    static int _rank;
+  /**
+   * storage of the rank to avoid function calls
+   */
+  static int _rank;
 
-    /**
-     * storage of the size to avoid function calls
-     */
-    static int _size;
+  /**
+   * storage of the size to avoid function calls
+   */
+  static int _size;
 };
 
 template<typename T>

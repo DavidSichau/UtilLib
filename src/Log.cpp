@@ -32,32 +32,32 @@ namespace {
  */
 std::string logLevelToString(LogLevel& level) {
     switch (level) {
-    case logERROR:
-        return std::string("Error");
-        break;
-    case logWARNING:
-        return std::string("Warning");
-        break;
-    case logINFO:
-        return std::string("Info");
-        break;
-    case logDEBUG:
-        return std::string("Debug");
-        break;
-    case logDEBUG1:
-        return std::string("Debug1");
-        break;
-    case logDEBUG2:
-        return std::string("Debug2");
-        break;
-    case logDEBUG3:
-        return std::string("Debug3");
-        break;
-    case logDEBUG4:
-        return std::string("Debug4");
-        break;
-    default:
-        break;
+        case logERROR:
+            return std::string("Error");
+            break;
+        case logWARNING:
+            return std::string("Warning");
+            break;
+        case logINFO:
+            return std::string("Info");
+            break;
+        case logDEBUG:
+            return std::string("Debug");
+            break;
+        case logDEBUG1:
+            return std::string("Debug1");
+            break;
+        case logDEBUG2:
+            return std::string("Debug2");
+            break;
+        case logDEBUG3:
+            return std::string("Debug3");
+            break;
+        case logDEBUG4:
+            return std::string("Debug4");
+            break;
+        default:
+            break;
     }
     return std::string("");
 }
@@ -91,7 +91,7 @@ void Log::writeOutput(const std::string& msg) {
     std::shared_ptr<std::ostream> pStream = getStream();
     if (!pStream)
         throw Exception(
-                "The stream is not available. There must have an error occurred.");
+            "The stream is not available. There must have an error occurred.");
     (*pStream) << msg;
     pStream->flush();
 }
@@ -108,15 +108,15 @@ std::ostringstream& Log::writeReport(LogLevel level) {
 
     _buffer << "- " << outstr;
     _buffer << " Proc " << MPIProxy().getRank() << " of "
-            << MPIProxy().getSize();
+        << MPIProxy().getSize();
     _buffer << std::setw(10) << logLevelToString(level) << ":\t";
     return _buffer;
 }
 
 void Log::setReportingLevel(LogLevel level) {
     LOG(logINFO) << "Report Level changed from "
-            << logLevelToString(_reportingLevel) << " to "
-            << logLevelToString(level);
+        << logLevelToString(_reportingLevel) << " to "
+        << logLevelToString(level);
     _reportingLevel = level;
 }
 

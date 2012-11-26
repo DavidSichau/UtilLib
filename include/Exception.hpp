@@ -30,44 +30,44 @@ namespace UtilLib{
  * miind exception base class.
  */
 class Exception : public std::exception
-{
-public:
-    /** Constructor for C-style string error messages.
-     *  @param message C-style string error message.
-     *                 The string contents are copied upon construction
-     *                 Responsibility for deleting the \c char* lies
-     *                 with the caller.
-     */
-    explicit Exception(const char* message);
+    {
+     public:
+      /** Constructor for C-style string error messages.
+       *  @param message C-style string error message.
+       *                 The string contents are copied upon construction
+       *                 Responsibility for deleting the \c char* lies
+       *                 with the caller.
+       */
+      explicit Exception(const char* message);
 
-    /** Constructor for STL string class error messages.
-     *  @param message The error message.
-     */
-    explicit Exception(const std::string& message);
+      /** Constructor for STL string class error messages.
+       *  @param message The error message.
+       */
+      explicit Exception(const std::string& message);
 
-    /** Destructor. Nothrow guarantee.
-     * Virtual to allow for subclassing.
-     */
-    virtual ~Exception() throw ();
+      /** Destructor. Nothrow guarantee.
+       * Virtual to allow for subclassing.
+       */
+      virtual ~Exception() throw ();
 
-    /** Returns a pointer to the constant error message.
-     *  @return A pointer to a \c const \c char*. The underlying memory
-     *          is in posession of the \c Exception object. Callers \a must
-     *          not attempt to free the memory.
-     */
-    virtual const char* what() const throw ();
+      /** Returns a pointer to the constant error message.
+       *  @return A pointer to a \c const \c char*. The underlying memory
+       *          is in posession of the \c Exception object. Callers \a must
+       *          not attempt to free the memory.
+       */
+      virtual const char* what() const throw ();
 
-protected:
-    /** Error message.
-     */
-    std::string msg_;
-};
+     protected:
+      /** Error message.
+      */
+      std::string msg_;
+    };
 
 }//end namespace
 
 
 /** Convenience macros.
- */
+*/
 #define lbm_fail(ERROR_MESSAGE) throw (UtilLib::Exception(ERROR_MESSAGE))
 
 

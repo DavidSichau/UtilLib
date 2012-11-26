@@ -37,50 +37,50 @@ namespace UtilLib {
 template<class T>
 class Singleton
 {
-public:
-    // disallow creation, copying and assignment
+ public:
+  // disallow creation, copying and assignment
 
-    /** Deleted constructor to disallow explicit construction.
-     * Is not defined.
-     */
-    Singleton()=delete;
+  /** Deleted constructor to disallow explicit construction.
+   * Is not defined.
+   */
+  Singleton()=delete;
 
-    /** Deleted copy constructor to disallow explicit copying.
-     * Is not defined.
-     * @param S A singleton object.
-     */
-    Singleton(const Singleton& S)=delete;
+  /** Deleted copy constructor to disallow explicit copying.
+   * Is not defined.
+   * @param S A singleton object.
+   */
+  Singleton(const Singleton& S)=delete;
 
-    /** Deleted assignment operator to disallow explicit assignment.
-     * @param S A singleton object.
-     * @return The current singleton.
-     */
-    Singleton& operator=(const Singleton& S)=delete;
+  /** Deleted assignment operator to disallow explicit assignment.
+   * @param S A singleton object.
+   * @return The current singleton.
+   */
+  Singleton& operator=(const Singleton& S)=delete;
 
-    /** Return a reference to the only instance of \c Singleton<T>.
-     * @return A reference to the instance of the object.
-     */
-    static T& instance();
+  /** Return a reference to the only instance of \c Singleton<T>.
+   * @return A reference to the instance of the object.
+   */
+  static T& instance();
 
-    /** Destructor.
-     */
-    ~Singleton();
+  /** Destructor.
+  */
+  ~Singleton();
 
-private:
+ private:
 
 
-    /** Create method. Creates the singleton instance (a Meyers singleton, ie.
-     * a function static object) upon the first call to \c instance().
-     */
-    static void create();
+  /** Create method. Creates the singleton instance (a Meyers singleton, ie.
+   * a function static object) upon the first call to \c instance().
+   */
+  static void create();
 
-    /** Pointer to the instance.
-     */
-    static T* pInstance_;
+  /** Pointer to the instance.
+  */
+  static T* pInstance_;
 
-    /** Status of the singleton. True if the singleton was destroyed.
-     */
-    static bool destroyed_;
+  /** Status of the singleton. True if the singleton was destroyed.
+  */
+  static bool destroyed_;
 
 };
 

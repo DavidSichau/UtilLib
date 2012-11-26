@@ -39,15 +39,15 @@ namespace UtilLib {
 template<typename IdentifierType, typename ProductType>
 class ErrorPolicyThrowException
 {
-protected:
-    /** Throw an exception of an unknown type is encountered.
-     * @param id The identifier of the unknown type
-     * @return throws an exception
-     */
-    static ProductType* onUnknownType(const IdentifierType& id)
-    {
-        throw std::bad_typeid();
-    }
+ protected:
+  /** Throw an exception of an unknown type is encountered.
+   * @param id The identifier of the unknown type
+   * @return throws an exception
+   */
+  static ProductType* onUnknownType(const IdentifierType& id)
+  {
+      throw std::bad_typeid();
+  }
 };
 
 /**
@@ -56,15 +56,15 @@ protected:
 template<typename IdentifierType, typename ProductType>
 class ErrorPolicyReturnNull
 {
-protected:
-    /** Return a numm pointer.
-     * @param id The identifier of the unknown type
-     * @return a 0 pointer
-     */
-    static ProductType* onUnknownType(const IdentifierType& id)
-    {
-        return 0;
-    }
+ protected:
+  /** Return a numm pointer.
+   * @param id The identifier of the unknown type
+   * @return a 0 pointer
+   */
+  static ProductType* onUnknownType(const IdentifierType& id)
+  {
+      return 0;
+  }
 };
 
 /**
@@ -108,59 +108,59 @@ protected:
  * @endcode
  */
 template<
-        class AbstractProduct,
-        typename IdentifierType,
-        template<typename,class > class FactoryErrorPolicy = ErrorPolicyThrowException,
-        typename ProductCreatorSignature = AbstractProduct* (*)()
-        > class Factory : public FactoryErrorPolicy<
-        IdentifierType,
-        AbstractProduct
-        >
+class AbstractProduct,
+      typename IdentifierType,
+      template<typename,class > class FactoryErrorPolicy = ErrorPolicyThrowException,
+typename ProductCreatorSignature = AbstractProduct* (*)()
+    > class Factory : public FactoryErrorPolicy<
+                      IdentifierType,
+                      AbstractProduct
+                      >
 {
-public:
-    /** Registers a type with the factory.
-     * @param id The identifier of the type.
-     * @param creator Function pointer to the type creation method.
-     * @return A boolean, true on success.
-     */
-    bool registerType(const IdentifierType& id,
-                      ProductCreatorSignature creator)
-    {
-        return productMap_.insert(typename ProductMap::value_type(id, creator)).second;
-    }
+ public:
+  /** Registers a type with the factory.
+   * @param id The identifier of the type.
+   * @param creator Function pointer to the type creation method.
+   * @return A boolean, true on success.
+   */
+  bool registerType(const IdentifierType& id,
+                    ProductCreatorSignature creator)
+  {
+      return productMap_.insert(typename ProductMap::value_type(id, creator)).second;
+  }
 
-    /** Unregisters a type.
-     * @param id The type identifier.
-     * @return A boolean, true on success.
-     */
-    bool unregisterType(const IdentifierType& id)
-    {
-        return (productMap_.erase(id) == 1);
-    }
+  /** Unregisters a type.
+   * @param id The type identifier.
+   * @return A boolean, true on success.
+   */
+  bool unregisterType(const IdentifierType& id)
+  {
+      return (productMap_.erase(id) == 1);
+  }
 
-    /** Create an instance of the specified type.
-     * @param id The type identifier.
-     * @return A pointer to an new instance of the requested type.
-     * @note The behavior upon requesting a non-existent type id
-     *       defined by the FactoryErrorPolicy policy.
-     */
-    AbstractProduct* createObject(const IdentifierType& id) const
-    {
-        typename ProductMap::const_iterator i = productMap_.find(id);
-        if (i != productMap_.end()) {
-            return (*i).second();
-        }
-        return this->onUnknownType(id);
-    }
-private:
-    /** Define a type that maps between type ids
-     * and the pointers to their creation methods.
-     */
-    typedef std::map<IdentifierType, ProductCreatorSignature> ProductMap;
+  /** Create an instance of the specified type.
+   * @param id The type identifier.
+   * @return A pointer to an new instance of the requested type.
+   * @note The behavior upon requesting a non-existent type id
+   *       defined by the FactoryErrorPolicy policy.
+   */
+  AbstractProduct* createObject(const IdentifierType& id) const
+  {
+      typename ProductMap::const_iterator i = productMap_.find(id);
+      if (i != productMap_.end()) {
+          return (*i).second();
+      }
+      return this->onUnknownType(id);
+  }
+ private:
+  /** Define a type that maps between type ids
+   * and the pointers to their creation methods.
+   */
+  typedef std::map<IdentifierType, ProductCreatorSignature> ProductMap;
 
-    /** The mapping between type ids and function pointers.
-     */
-    ProductMap productMap_;
+  /** The mapping between type ids and function pointers.
+  */
+  ProductMap productMap_;
 };
 
 } //end namespace utillib
