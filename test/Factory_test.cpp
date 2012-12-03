@@ -69,7 +69,7 @@ class ConcreteType : public AbstractType
 private:
     static const bool registered_;
 
-    static const bool registerLoader()
+    static bool registerLoader()
     {
         std::string ids="test";
         return AbstractFactory::instance().registerType(ids, ConcreteType::create);
