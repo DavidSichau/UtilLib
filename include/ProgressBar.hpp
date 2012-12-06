@@ -30,11 +30,9 @@ class ProgressBar {
    * Constructor
    * @param expected_count The expected count
    * @param updateInterval how often the information should be updated default this is 30 seconds
-   * @param description The description of the progress Bar
    * @param os The output stream
    */
-  explicit ProgressBar(unsigned long expected_count, double updateInterval = 0.5,
-                       const std::string & description = "", std::ostream& os = std::cout);
+  explicit ProgressBar(unsigned long expected_count, double updateInterval = 0.5, std::ostream& os = std::cout);
   /**
    * Display appropriate progress tic if needed.
    * @param increment
@@ -53,26 +51,15 @@ class ProgressBar {
   unsigned long operator++(int);
 
  private:
+  unsigned long count_ = 0;///The current count
+  unsigned long expectedCount_;///The number of counts
+  unsigned long nextTicCount_ = 0;///When the next tic should be generated
+  unsigned long updateCount_ = 0;///When the percentage should be updated
+  unsigned short tic_ = 0;///The current tic
   /**
-   * @brief count_ stores the current count,
-   * expectedCount_ stores the expected count,
-   * nextTicCount stores at which tic the next tic is generated
+   * @brief the interval in sec at which the percentage and runtime estimation is updated
    */
-  unsigned long count_, expectedCount_, nextTicCount_, updateCount_;
-
-  /**
-   * @brief the current tic
-   */
-  unsigned int tic_;
-  /**
-   * @brief the interval at which the percentage and runtime estimation is
-   * updated
-   */
-  const double updateInterval_;
-  /**
-   * Description of the progress Bar
-   */
-  const std::string description_;
+  const float updateInterval_;
   /**
    * The stream where the progress Bar is printed to.
    */
@@ -91,8 +78,7 @@ class ProgressBar {
   void displayPercentage();
 
   /**
-   * @brief The timers where wholeTime_ is used for the overall time and timer_
-   * is used to make an update every updateInterval_ seconds
+   * @brief The timers where wholeTime_ is used for the overall time
    */
   Timer wholeTime_;
 };

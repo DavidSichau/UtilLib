@@ -43,19 +43,17 @@ void test_Constructor() {
 
     std::stringstream os;
 
-    ProgressBar pb(100, 0.5,"blub", os);
+    ProgressBar pb(100, 0.5, os);
 
     if (MPIProxy().getRank() == 0) {
         BOOST_CHECK(pb.expectedCount_==100);
     }
-    BOOST_CHECK(pb.description_=="blub");
     BOOST_CHECK(pb.updateInterval_==0.5);
 
     if (MPIProxy().getRank() == 0) {
 
         std::stringstream tempStream;
-        tempStream << "blub" << "\n"
-                << "progress: "<<std::setw(4)<<std::setprecision(3)<< static_cast<float>(0)<<"%   estimated time remaining:"<< std::setw(6) << std::setprecision(3) <<"inf sec\n"
+        tempStream <<"progress: "<<std::setw(4)<<std::setprecision(3)<< static_cast<float>(0)<<"%   estimated time remaining:"<< std::setw(6) << std::setprecision(3) <<"inf sec\n"
                 << "0%   10   20   30   40   50   60   70   80   90   100%\n"
                 << "|----|----|----|----|----|----|----|----|----|----|"
                 << std::endl;

@@ -22,30 +22,26 @@
 
 namespace UtilLib {
 
-ProgressBar::ProgressBar(unsigned long expectedCount, double updateInterval,
-                         const std::string & description, std::ostream& os) :
-    updateInterval_(updateInterval),description_(description), outputStream_(os) {
-    count_ = nextTicCount_ = tic_ = 0;
-    expectedCount_ = expectedCount;
-    outputStream_ << description_ << "\n"
-        << "progress: "<<std::setw(4)<<std::setprecision(3)<< static_cast<float>(tic_)<<"%   estimated time remaining:"<< std::setw(6) << std::setprecision(3) <<"inf sec\n"
-        << "0%   10   20   30   40   50   60   70   80   90   100%\n"
-        << "|----|----|----|----|----|----|----|----|----|----|"
-        << std::endl;
-    wholeTime_.start();
+ProgressBar::ProgressBar(unsigned long expectedCount, double updateInterval, std::ostream& os) :
+    updateInterval_(updateInterval), outputStream_(os),expectedCount_(expectedCount) {
+        outputStream_  << "progress: "<<std::setw(4)<<std::setprecision(3)<< static_cast<float>(tic_)<<"%   estimated time remaining:"<< std::setw(6) << std::setprecision(3) <<"inf sec\n"
+            << "0%   10   20   30   40   50   60   70   80   90   100%\n"
+            << "|----|----|----|----|----|----|----|----|----|----|"
+            << std::endl;
+        wholeTime_.start();
 
-}
+    }
 
 unsigned long ProgressBar::operator+=(unsigned long increment) {
-        count_+=increment;
-        if (count_ >= nextTicCount_) {
-            displayPercentage();
-            displayTic();
-        }
-        else if(count_ > updateCount_){
-            displayPercentage();
-        }
-        return count_;
+    count_+=increment;
+    if (count_ >= nextTicCount_) {
+        displayPercentage();
+        displayTic();
+    }
+    else if(count_ > updateCount_){
+        displayPercentage();
+    }
+    return count_;
 }
 
 unsigned long ProgressBar::operator++() {
@@ -57,7 +53,7 @@ unsigned long ProgressBar::operator++(int) {
 }
 
 void ProgressBar::displayTic() {
-    unsigned int tics_needed = static_cast<unsigned int>((static_cast<double>(count_) / expectedCount_) * 50.0);
+    unsigned short tics_needed = static_cast<unsigned short>((static_cast<double>(count_) / expectedCount_) * 50.0);
     do {
         outputStream_ << '*' << std::flush;
     } while (++tic_ < tics_needed);
@@ -76,8 +72,8 @@ void ProgressBar::displayTic() {
 
 void ProgressBar::displayPercentage() {
     const float percentage = static_cast<float>(count_)/(expectedCount_)*100;
-    const double dt = wholeTime_.stop();
-    const double remainingTime= 100*dt/percentage - dt;
+    const float dt = wholeTime_.stop();
+    const float remainingTime= 100*dt/percentage - dt;
     updateCount_ = count_/dt * updateInterval_;
     /*
      * I use the following terminal control sequences:
