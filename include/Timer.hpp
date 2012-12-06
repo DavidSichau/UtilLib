@@ -36,7 +36,7 @@ class Timer {
   }
 
   /**
-   * @brief stops the timer and returns the time
+   * @brief stops the timer and returns the time in sec
    *
    * @return the time since the timer has started
    */

@@ -1,5 +1,4 @@
-// Copyright (c) 2005 - 2012 Marc de Kamps
-//						2012 David-Matthias Sichau
+// Copyright (c) 	2012 David-Matthias Sichau
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -33,7 +32,7 @@ class ProgressBar {
    * @param description The description of the progress Bar
    * @param os The output stream
    */
-  explicit ProgressBar(unsigned long expected_count,
+  explicit ProgressBar(unsigned long expected_count, double updateInterval = 30,
                        const std::string & description = "", std::ostream& os = std::cout);
 
   /**
@@ -62,9 +61,22 @@ class ProgressBar {
   unsigned long operator++(int);
 
  private:
+  /**
+   * @brief count_ stores the current count,
+   * expectedCount_ stores the expected count,
+   * nextTicCount stores at which tic the next tic is generated
+   */
   unsigned long count_, expectedCount_, nextTicCount_;
-  unsigned int tic_;
 
+  /**
+   * @brief the current tic
+   */
+  unsigned int tic_;
+  /**
+   * @brief the interval at which the percentage and runtime estimation is
+   * updated
+   */
+  const double updateInterval_;
   /**
    * Description of the progress Bar
    */
@@ -81,7 +93,16 @@ class ProgressBar {
    */
   void displayTic();
 
-  Timer timer_;
+  /**
+   * @brief updates the percentage.
+   */
+  void displayPercentage();
+
+  /**
+   * @brief The timers where wholeTime_ is used for the overall time and timer_
+   * is used to make an update every updateInterval_ seconds
+   */
+  Timer wholeTime_, timer_;
 };
 
 } /* end namespace  */

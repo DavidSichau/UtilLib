@@ -43,12 +43,13 @@ void test_Constructor() {
 
     std::stringstream os;
 
-    ProgressBar pb(100, "blub", os);
+    ProgressBar pb(100, 0.5,"blub", os);
 
     if (MPIProxy().getRank() == 0) {
         BOOST_CHECK(pb.expectedCount_==100);
     }
     BOOST_CHECK(pb.description_=="blub");
+    BOOST_CHECK(pb.updateInterval_==0.5);
 
     if (MPIProxy().getRank() == 0) {
 

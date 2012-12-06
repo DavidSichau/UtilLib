@@ -23,30 +23,38 @@
 
 namespace UtilLib {
 
-ProgressBar::ProgressBar(unsigned long expectedCount,
+ProgressBar::ProgressBar(unsigned long expectedCount, double updateInterval,
                          const std::string & description, std::ostream& os) :
-    description_(description), outputStream_(os) {
-    if (MPIProxy().getRank() == 0) {
-        restart(expectedCount);
+    updateInterval_(updateInterval),description_(description), outputStream_(os) {
+        if (MPIProxy().getRank() == 0) {
+            restart(expectedCount);
+        }
     }
-}
 
 void ProgressBar::restart(unsigned long expected_count) {
     count_ = nextTicCount_ = tic_ = 0;
     expectedCount_ = expected_count;
     outputStream_ << description_ << "\n"
-                  << "progress: "<<std::setw(4)<<std::setprecision(3)<< static_cast<float>(tic_)<<"%   estimated time remaining:"<< std::setw(6) << std::setprecision(3) <<"inf sec\n"
-                  << "0%   10   20   30   40   50   60   70   80   90   100%\n"
-                  << "|----|----|----|----|----|----|----|----|----|----|"
-                  << std::endl;
+        << "progress: "<<std::setw(4)<<std::setprecision(3)<< static_cast<float>(tic_)<<"%   estimated time remaining:"<< std::setw(6) << std::setprecision(3) <<"inf sec\n"
+        << "0%   10   20   30   40   50   60   70   80   90   100%\n"
+        << "|----|----|----|----|----|----|----|----|----|----|"
+        << std::endl;
+    wholeTime_.start();
     timer_.start();
 
 }
 
 unsigned long ProgressBar::operator+=(unsigned long increment) {
     if (MPIProxy().getRank() == 0) {
-        if ((count_ += increment) >= nextTicCount_) {
+        count_+=increment;
+        if (count_ >= nextTicCount_) {
+            displayPercentage();
             displayTic();
+            timer_.start();
+        }
+        else if(timer_.stop() > updateInterval_){
+            displayPercentage();
+            timer_.start();
         }
     }
     return count_;
@@ -61,40 +69,38 @@ unsigned long ProgressBar::operator++(int) {
 }
 
 void ProgressBar::displayTic() {
-    unsigned int tics_needed =
-            static_cast<unsigned int>((static_cast<double>(count_)
-                                       / expectedCount_) * 50.0);
-    const double dt = timer_.stop();
-    const double remainingTime= (50 - tics_needed)*dt;
-    /*
-      * I use the following terminal control sequences:
-      * \x1b[s stores the current cursor position
-      * \x1b[A goes one line up
-      * \r goes to the beginning of the line
-      * \x1b[K deletes form the cursor position to the end
-      * \x1b[u restores the cursor position
-      */
-    outputStream_ << "\x1b[s\x1b[A\x1b[A\x1b[A\r"<<"progress: " << std::setw(4) << std::setprecision(3)
-                  << static_cast<float>(count_)/(expectedCount_)*100 << "%   "
-                  << "estimated time remaining:"<< std::setw(6) << std::setprecision(3) << remainingTime<<" sec"<<"\x1b[K\x1b[u";
-    timer_.start();
-
+    unsigned int tics_needed = static_cast<unsigned int>((static_cast<double>(count_) / expectedCount_) * 50.0);
     do {
         outputStream_ << '*' << std::flush;
     } while (++tic_ < tics_needed);
 
     nextTicCount_ = static_cast<unsigned long>((tic_ / 50.0) * expectedCount_);
-
+    //if the end is reached make sure that the output is correct
     if (count_ == expectedCount_) {
-
-
         outputStream_ << "\x1b[s\x1b[A\x1b[A\x1b[A\r"<<"progress: " << std::setw(4) << std::setprecision(3)
-                  << static_cast<float>(100) << "%   "
-                  << "estimated time remaining:"<< std::setw(6) << std::setprecision(3) << 0.0<<" sec"<<"\x1b[K\x1b[u";
-       if (tic_ < 51)
+            << static_cast<float>(100) << "%   "
+            << "estimated time remaining:"<< std::setw(6) << std::setprecision(3) << 0.0<<" sec"<<"\x1b[K\x1b[u";
+        if (tic_ < 51)
             outputStream_ << '*';
-        outputStream_ << std::endl;
+        outputStream_ << "\noverall runtime: "<<std::setw(6)<<std::setprecision(3) << wholeTime_.stop()<<" sec"<<std::endl;
     }
+}
+
+void ProgressBar::displayPercentage() {
+    const float percentage = static_cast<float>(count_)/(expectedCount_)*100;
+    const double dt = wholeTime_.stop();
+    const double remainingTime= 100*dt/percentage - dt;
+    /*
+     * I use the following terminal control sequences:
+     * \x1b[s stores the current cursor position
+     * \x1b[A goes one line up
+     * \r goes to the beginning of the line
+     * \x1b[K deletes form the cursor position to the end
+     * \x1b[u restores the cursor position
+     */
+    outputStream_ << "\x1b[s\x1b[A\x1b[A\x1b[A\r"<<"progress: " << std::setw(4) << std::setprecision(3)
+        << percentage << "%   "
+        << "estimated time remaining:"<< std::setw(6) << std::setprecision(3) << remainingTime<<" sec"<<"\x1b[K\x1b[u"<<std::flush;
 }
 
 } /* end namespace  */
