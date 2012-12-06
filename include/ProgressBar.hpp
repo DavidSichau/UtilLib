@@ -35,15 +35,6 @@ class ProgressBar {
    */
   explicit ProgressBar(unsigned long expected_count, double updateInterval = 0.5,
                        const std::string & description = "", std::ostream& os = std::cout);
-
-  /**
-   * displays the progressbar
-   * @param expected_count The expected total count
-   * @post count()=0
-   * @post expected_count()==expected_count
-   */
-  void restart(unsigned long expected_count);
-
   /**
    * Display appropriate progress tic if needed.
    * @param increment

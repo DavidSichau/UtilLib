@@ -25,12 +25,8 @@ namespace UtilLib {
 ProgressBar::ProgressBar(unsigned long expectedCount, double updateInterval,
                          const std::string & description, std::ostream& os) :
     updateInterval_(updateInterval),description_(description), outputStream_(os) {
-            restart(expectedCount);
-}
-
-void ProgressBar::restart(unsigned long expected_count) {
     count_ = nextTicCount_ = tic_ = 0;
-    expectedCount_ = expected_count;
+    expectedCount_ = expectedCount;
     outputStream_ << description_ << "\n"
         << "progress: "<<std::setw(4)<<std::setprecision(3)<< static_cast<float>(tic_)<<"%   estimated time remaining:"<< std::setw(6) << std::setprecision(3) <<"inf sec\n"
         << "0%   10   20   30   40   50   60   70   80   90   100%\n"
