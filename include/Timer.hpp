@@ -1,5 +1,4 @@
-// Copyright (c) 2005 - 2012 Marc de Kamps
-//						2012 David-Matthias Sichau
+// Copyright (c)   2012 David-Matthias Sichau
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -17,72 +16,47 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef UTILIB_PROGRESSBAR_HPP_
-#define UTILIB_PROGRESSBAR_HPP_
+#ifndef UTILIB_TIMER_HPP_
+#define UTILIB_TIMER_HPP_
 
-#include <iostream>
-#include <UtilLib/include/Timer.hpp>
+#pragma once
+#include <sys/time.h>
 
 namespace UtilLib{
 
-class ProgressBar {
+class Timer {
  public:
-  /**
-   * Constructor
-   * @param expected_count The expected count
-   * @param description The description of the progress Bar
-   * @param os The output stream
-   */
-  explicit ProgressBar(unsigned long expected_count,
-                       const std::string & description = "", std::ostream& os = std::cout);
 
   /**
-   * displays the progressbar
-   * @param expected_count The expected total count
-   * @post count()=0
-   * @post expected_count()==expected_count
+   * @brief starts the timer
    */
-  void restart(unsigned long expected_count);
+  void start()
+  {
+      gettimeofday(&t_start,  &t_zone);
+  }
 
   /**
-   * Display appropriate progress tic if needed.
-   * @param increment
-   * @post count()== original count() + increment
+   * @brief stops the timer and returns the time
+   *
+   * @return the time since the timer has started
    */
-  unsigned long operator+=(unsigned long increment);
-
-  /**
-   * Prefix operator
-   */
-  unsigned long operator++();
-
-  /**
-   * Postfix operator
-   */
-  unsigned long operator++(int);
-
+  double stop()
+  {
+      gettimeofday(&t_end,  &t_zone);
+      return (t_end.tv_usec  - t_start.tv_usec)*1e-6  + (t_end.tv_sec  - t_start.tv_sec);
+  }
  private:
-  unsigned long count_, expectedCount_, nextTicCount_;
-  unsigned int tic_;
 
   /**
-   * Description of the progress Bar
+   * @brief storage for the start and end time
    */
-  const std::string description_;
+  struct timeval t_start, t_end;
   /**
-   * The stream where the progress Bar is printed to.
+   * @brief stores the timezone
    */
-  std::ostream& outputStream_;
-
-  /**
-   * use of floating point ensures that both large and small counts
-   * work correctly.  static_cast<>() is also used several places
-   * to suppress spurious compiler warnings.
-   */
-  void displayTic();
-
-  Timer timer_;
+  struct timezone t_zone;
 };
 
+
 } /* end namespace  */
-#endif /* UTILIB_PROGRESSBAR_HPP_ */
+#endif /* UTILIB_TIMER_HPP_ */

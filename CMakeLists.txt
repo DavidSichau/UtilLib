@@ -27,6 +27,7 @@ set(UTILLIB_HEADER
     include/Factory.hpp
     include/ProgressBar.hpp
     include/MPIProxy.hpp
+    include/Timer.hpp
     include/Log.hpp
     include/Singleton.hpp
 

@@ -32,7 +32,8 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-
+#include <iomanip>
+#include <algorithm>
 #include <boost/test/minimal.hpp>
 using namespace boost::unit_test;
 using namespace UtilLib;
@@ -45,14 +46,15 @@ void test_Constructor() {
     ProgressBar pb(100, "blub", os);
 
     if (MPIProxy().getRank() == 0) {
-        BOOST_CHECK(pb._expectedCount==100);
+        BOOST_CHECK(pb.expectedCount_==100);
     }
-    BOOST_CHECK(pb._description=="blub");
+    BOOST_CHECK(pb.description_=="blub");
 
     if (MPIProxy().getRank() == 0) {
 
         std::stringstream tempStream;
         tempStream << "blub" << "\n"
+                << "progress: "<<std::setw(4)<<std::setprecision(3)<< static_cast<float>(0)<<"%   estimated time remaining:"<< std::setw(6) << std::setprecision(3) <<"inf sec\n"
                 << "0%   10   20   30   40   50   60   70   80   90   100%\n"
                 << "|----|----|----|----|----|----|----|----|----|----|"
                 << std::endl;
@@ -61,16 +63,16 @@ void test_Constructor() {
         pb++;
         pb++;
         pb++;
-        tempStream << "***";
-        BOOST_CHECK(os.str()==tempStream.str());
+        std::string s = os.str();
+        BOOST_CHECK(std::count(s.begin(), s.end(),'*')==3);
         ++pb;
         ++pb;
         ++pb;
-        tempStream << "*";
-        BOOST_CHECK(os.str()==tempStream.str());
+        s = os.str();
+        BOOST_CHECK(std::count(s.begin(), s.end(), '*')==4);
         pb+=50;
-        tempStream <<"************************";
-        BOOST_CHECK(os.str()==tempStream.str());
+        s = os.str();
+        BOOST_CHECK(std::count(s.begin(), s.end(), '*')==28);
 
     }
 }
