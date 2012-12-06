@@ -18,7 +18,6 @@
 //
 
 #include <UtilLib/include/ProgressBar.hpp>
-#include <UtilLib/include/MPIProxy.hpp>
 #include <iomanip>
 
 namespace UtilLib {
@@ -26,10 +25,8 @@ namespace UtilLib {
 ProgressBar::ProgressBar(unsigned long expectedCount, double updateInterval,
                          const std::string & description, std::ostream& os) :
     updateInterval_(updateInterval),description_(description), outputStream_(os) {
-        if (MPIProxy().getRank() == 0) {
             restart(expectedCount);
-        }
-    }
+}
 
 void ProgressBar::restart(unsigned long expected_count) {
     count_ = nextTicCount_ = tic_ = 0;
@@ -40,24 +37,19 @@ void ProgressBar::restart(unsigned long expected_count) {
         << "|----|----|----|----|----|----|----|----|----|----|"
         << std::endl;
     wholeTime_.start();
-    timer_.start();
 
 }
 
 unsigned long ProgressBar::operator+=(unsigned long increment) {
-    if (MPIProxy().getRank() == 0) {
         count_+=increment;
         if (count_ >= nextTicCount_) {
             displayPercentage();
             displayTic();
-            timer_.start();
         }
-        else if(timer_.stop() > updateInterval_){
+        else if(count_ > updateCount_){
             displayPercentage();
-            timer_.start();
         }
-    }
-    return count_;
+        return count_;
 }
 
 unsigned long ProgressBar::operator++() {
@@ -90,6 +82,7 @@ void ProgressBar::displayPercentage() {
     const float percentage = static_cast<float>(count_)/(expectedCount_)*100;
     const double dt = wholeTime_.stop();
     const double remainingTime= 100*dt/percentage - dt;
+    updateCount_ = count_/dt * updateInterval_;
     /*
      * I use the following terminal control sequences:
      * \x1b[s stores the current cursor position

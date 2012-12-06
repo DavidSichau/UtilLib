@@ -29,10 +29,11 @@ class ProgressBar {
   /**
    * Constructor
    * @param expected_count The expected count
+   * @param updateInterval how often the information should be updated default this is 30 seconds
    * @param description The description of the progress Bar
    * @param os The output stream
    */
-  explicit ProgressBar(unsigned long expected_count, double updateInterval = 30,
+  explicit ProgressBar(unsigned long expected_count, double updateInterval = 0.5,
                        const std::string & description = "", std::ostream& os = std::cout);
 
   /**
@@ -66,7 +67,7 @@ class ProgressBar {
    * expectedCount_ stores the expected count,
    * nextTicCount stores at which tic the next tic is generated
    */
-  unsigned long count_, expectedCount_, nextTicCount_;
+  unsigned long count_, expectedCount_, nextTicCount_, updateCount_;
 
   /**
    * @brief the current tic
@@ -102,7 +103,7 @@ class ProgressBar {
    * @brief The timers where wholeTime_ is used for the overall time and timer_
    * is used to make an update every updateInterval_ seconds
    */
-  Timer wholeTime_, timer_;
+  Timer wholeTime_;
 };
 
 } /* end namespace  */

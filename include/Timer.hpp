@@ -40,7 +40,7 @@ class Timer {
    *
    * @return the time since the timer has started
    */
-  double stop()
+  inline double stop()
   {
       gettimeofday(&t_end,  &t_zone);
       return (t_end.tv_usec  - t_start.tv_usec)*1e-6  + (t_end.tv_sec  - t_start.tv_sec);
