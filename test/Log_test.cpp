@@ -103,26 +103,16 @@ void test_writeOutput() {
 }
 
 void test_getReportingLevel() {
-#ifdef DEBUG
-    BOOST_CHECK(Log::getReportingLevel()==logDEBUG4);
-#else
-    BOOST_CHECK(Log::getReportingLevel()==logINFO);
-#endif
+    BOOST_CHECK(Log::getReportingLevel()==DEBUGLEVEL);
 
 }
 
 void test_setReportingLevel() {
-#ifdef DEBUG
-    BOOST_CHECK(Log::getReportingLevel()==logDEBUG4);
-#else
-    BOOST_CHECK(Log::getReportingLevel()==logINFO);
-#endif
+    BOOST_CHECK(Log::getReportingLevel()==DEBUGLEVEL);
     std::shared_ptr<std::ostringstream> pStream(new std::ostringstream());
 
     Log::setStream(std::dynamic_pointer_cast<std::ostream>(pStream));
     Log::setReportingLevel(logERROR);
-    BOOST_CHECK(
-            pStream->str().find("Report")==space || pStream->str().find("Report")==space+1);
     BOOST_CHECK(Log::getReportingLevel()==logERROR);
 
 }
