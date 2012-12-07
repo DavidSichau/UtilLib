@@ -74,7 +74,7 @@ void ProgressBar::displayPercentage() {
     const float percentage = static_cast<float>(count_)/(expectedCount_)*100;
     const float dt = wholeTime_.stop();
     const float remainingTime= 100*dt/percentage - dt;
-    updateCount_ = count_/dt * updateInterval_;
+    updateCount_ = count_ + count_/dt * updateInterval_;
     /*
      * I use the following terminal control sequences:
      * \x1b[s stores the current cursor position
