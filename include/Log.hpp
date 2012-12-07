@@ -61,7 +61,7 @@ namespace UtilLib{
  * @code{.cpp}
  * 	std::shared_ptr<std::ostream> pStream( new std::ofstream("MYLOGFILENAME"));
  *	if (!pStream){
- *         throw utilities::Exception("cannot open log file.");
+ *         throw UtilLib::Exception("cannot open log file.");
  *	}
  *	utilities::Log::setStream(pStream);
  * @endcode
