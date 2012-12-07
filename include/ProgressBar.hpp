@@ -32,7 +32,7 @@ class ProgressBar {
    * @param updateInterval how often the information should be updated default this is 30 seconds
    * @param os The output stream
    */
-  explicit ProgressBar(unsigned long expected_count, double updateInterval = 0.5, std::ostream& os = std::cout);
+  explicit ProgressBar(unsigned long expected_count, double updateInterval = 30, std::ostream& os = std::cout);
   /**
    * Display appropriate progress tic if needed.
    * @param increment
