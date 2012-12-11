@@ -23,7 +23,7 @@
 namespace UtilLib {
 
 ProgressBar::ProgressBar(unsigned long expectedCount, double updateInterval, std::ostream& os) :
-    updateInterval_(updateInterval), outputStream_(os),expectedCount_(expectedCount) {
+     expectedCount_(expectedCount), outputStream_(os),updateInterval_(updateInterval) {
         outputStream_  << "progress: "<<std::setw(4)<<std::setprecision(3)<< static_cast<float>(tic_)<<"%   estimated time remaining:"<< std::setw(6) << std::setprecision(3) <<"inf sec\n"
             << "0%   10   20   30   40   50   60   70   80   90   100%\n"
             << "|----|----|----|----|----|----|----|----|----|----|"

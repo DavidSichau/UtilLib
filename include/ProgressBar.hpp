@@ -56,14 +56,15 @@ class ProgressBar {
   unsigned long nextTicCount_ = 0;///When the next tic should be generated
   unsigned long updateCount_ = 0;///When the percentage should be updated
   unsigned short tic_ = 0;///The current tic
+   /**
+   * The stream where the progress Bar is printed to.
+   */
+  std::ostream& outputStream_;
   /**
    * @brief the interval in sec at which the percentage and runtime estimation is updated
    */
   const float updateInterval_;
-  /**
-   * The stream where the progress Bar is printed to.
-   */
-  std::ostream& outputStream_;
+
 
   /**
    * use of floating point ensures that both large and small counts
