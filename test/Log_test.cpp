@@ -77,9 +77,9 @@ void test_writeReport() {
 
     lg.writeReport() << "blub" << 42;
     BOOST_CHECK(
-            lg._buffer.str().find("blub")==space || lg._buffer.str().find("blub")==space+1);
+            lg.buffer_.str().find("blub")==space || lg.buffer_.str().find("blub")==space+1);
     BOOST_CHECK(
-            lg._buffer.str().find("42")==space+4 || lg._buffer.str().find("42")==space+5);
+            lg.buffer_.str().find("42")==space+4 || lg.buffer_.str().find("42")==space+5);
 
 }
 

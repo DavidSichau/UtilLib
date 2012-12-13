@@ -121,7 +121,7 @@ namespace UtilLib{
         */
 
         /**
-         * The log levels for more details see \ref provided_error_levels
+         * The log levels for more details see \ref provided_debug_levels
          */
         enum LogLevel {
             logERROR,  //!< logERROR
@@ -200,16 +200,16 @@ namespace UtilLib{
        * The current reporting level of the Log, all messages with a level below this level
        * are printed the rest is ignored
        */
-      static LogLevel _reportingLevel;
+      static LogLevel reportingLevel_;
 
       /**
        * pointer to the stream
        */
-      static std::shared_ptr<std::ostream> _pStream;
+      static std::shared_ptr<std::ostream> pStream_;
       /**
        * The buffer for the log message
        */
-      std::ostringstream _buffer;
+      std::ostringstream buffer_;
     };
 
 
@@ -219,8 +219,6 @@ namespace UtilLib{
  * macro to allow easier generation of log messages.
  * this will improve the efficiency significantly as the checks are conducted at compile time.
  * see also \ref details_macro for more details
- *
- *
  */
 #define LOG(level) \
     if (level > UtilLib::Log::getReportingLevel() || !UtilLib::Log::getStream()) ; \

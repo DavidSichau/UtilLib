@@ -68,23 +68,21 @@ struct null_deleter {
 };
 }
 
-/**
+/*
  * The default log level is set to the compile flag DEBUGLEVEL.
  */
-LogLevel Log::_reportingLevel = DEBUGLEVEL;
+LogLevel Log::reportingLevel_ = DEBUGLEVEL;
 
-/**
- * Default the log is printed to std::cerr. To avoid the deletion of std::cerr
- * a null_deleter is provided.
- */
-std::shared_ptr<std::ostream> Log::_pStream(&std::cerr, null_deleter());
+
+// Default the log is printed to std::cerr. To avoid the deletion of std::cerr a null_deleter is provided.
+std::shared_ptr<std::ostream> Log::pStream_(&std::cerr, null_deleter());
 
 std::shared_ptr<std::ostream> Log::getStream() {
-    return _pStream;
+    return pStream_;
 }
 
 void Log::setStream(std::shared_ptr<std::ostream> pStream) {
-    _pStream = pStream;
+    pStream_ = pStream;
 }
 
 void Log::writeOutput(const std::string& msg) {
@@ -106,27 +104,27 @@ std::ostringstream& Log::writeReport(LogLevel level) {
     char outstr[200];
     strftime(outstr, sizeof(outstr), "%x% %H:%M:%S", tempTm2);
 
-    _buffer << "- " << outstr;
-    _buffer << " Proc " << MPIProxy().getRank() << " of "
+    buffer_ << "- " << outstr;
+    buffer_ << " Proc " << MPIProxy().getRank() << " of "
         << MPIProxy().getSize();
-    _buffer << std::setw(10) << logLevelToString(level) << ":\t";
-    return _buffer;
+    buffer_ << std::setw(10) << logLevelToString(level) << ":\t";
+    return buffer_;
 }
 
 void Log::setReportingLevel(LogLevel level) {
     LOG(logINFO) << "Report Level changed from "
-        << logLevelToString(_reportingLevel) << " to "
+        << logLevelToString(reportingLevel_) << " to "
         << logLevelToString(level);
-    _reportingLevel = level;
+    reportingLevel_ = level;
 }
 
 LogLevel Log::getReportingLevel() {
-    return _reportingLevel;
+    return reportingLevel_;
 }
 
 Log::~Log() {
-    _buffer << std::endl;
-    Log::writeOutput(_buffer.str());
+    buffer_ << std::endl;
+    Log::writeOutput(buffer_.str());
 }
 
 }
