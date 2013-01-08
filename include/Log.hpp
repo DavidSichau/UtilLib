@@ -1,33 +1,34 @@
-// Copyright (c) 2005 - 2012 Marc de Kamps
-//						2012 David-Matthias Sichau
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-//
-//    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-//    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation
-//      and/or other materials provided with the distribution.
-//    * Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software
-//      without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
-// USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
+/* Copyright (c) 2013 David Sichau <mail"at"sichau"dot"eu>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
 
 #ifndef UTILIB_LOG_HPP_
 #define UTILIB_LOG_HPP_
 
+#include <time.h>
 #include <iostream>
 #include <memory>
-#include <time.h>
-#include <string>
 #include <sstream>
+#include <string>
 
-namespace UtilLib{
-
+namespace UtilLib {
 /*! \page logging The Log utilities provided by miind
  * This page contains the following sections:
  * <ol>
@@ -50,7 +51,7 @@ namespace UtilLib{
  * To change the reporting level of the log class the following code is needed:
  *
  * @code{.cpp}
- * 	utilities::Log::setReportingLevel(utilities::logWARNING);
+ *      utilities::Log::setReportingLevel(utilities::logWARNING);
  * @endcode
  *
  * This code would set the reporting level to \c logWARNING
@@ -59,7 +60,7 @@ namespace UtilLib{
  * into a log file the following code is needed:
  *
  * @code{.cpp}
- * 	std::shared_ptr<std::ostream> pStream( new std::ofstream("MYLOGFILENAME"));
+ *      std::shared_ptr<std::ostream> pStream( new std::ofstream("MYLOGFILENAME"));
  *	if (!pStream){
  *         throw UtilLib::Exception("cannot open log file.");
  *	}
@@ -99,121 +100,118 @@ namespace UtilLib{
  *
  * \section provided_debug_levels Provided Debug levels
  *
-    * <dl>
-        * <dt>logERROR</dt>
-        * <dd>Only use this for real error messages, as these are always logged.</dd>
-        * <dt>logWARNING</dt>
-        * <dd>use this for warnings messages.</dd>
-        * <dt>logINFO</dt>
-        * <dd>Use this for information messages</dd>
-        * <dt>logDEBUG</dt>
-        * <dd>Use this for very important debug messages</dd>
-        * <dt>logDEBUG1</dt>
-        * <dd>Use this for important debug messages</dd>
-        * <dt>logDEBUG2</dt>
-        * <dd>Use this for not so important debug messages</dd>
-        * <dt>logDEBUG3</dt>
-        * <dd>Use this for not important debug messages</dd>
-        * <dt>logDEBUG4</dt>
-        * <dd>Use this for for every debug detail messages</dd>
-        * </dl>
-        *
-        */
+ * <dl>
+ * <dt>logERROR</dt>
+ * <dd>Only use this for real error messages, as these are always logged.</dd>
+ * <dt>logWARNING</dt>
+ * <dd>use this for warnings messages.</dd>
+ * <dt>logINFO</dt>
+ * <dd>Use this for information messages</dd>
+ * <dt>logDEBUG</dt>
+ * <dd>Use this for very important debug messages</dd>
+ * <dt>logDEBUG1</dt>
+ * <dd>Use this for important debug messages</dd>
+ * <dt>logDEBUG2</dt>
+ * <dd>Use this for not so important debug messages</dd>
+ * <dt>logDEBUG3</dt>
+ * <dd>Use this for not important debug messages</dd>
+ * <dt>logDEBUG4</dt>
+ * <dd>Use this for for every debug detail messages</dd>
+ * </dl>
+ *
+ */
 
-        /**
-         * The log levels for more details see \ref provided_debug_levels
-         */
-        enum LogLevel {
-            logERROR,  //!< logERROR
-            logWARNING,//!< logWARNING
-            logINFO,   //!< logINFO
-            logDEBUG,  //!< logDEBUG
-            logDEBUG1, //!< logDEBUG1
-            logDEBUG2, //!< logDEBUG2
-            logDEBUG3, //!< logDEBUG3
-            logDEBUG4  //!< logDEBUG4
-        };
+/**
+ * The log levels for more details see \ref provided_debug_levels
+ */
+enum LogLevel {
+    logERROR,  // !< logERROR
+    logWARNING,  // !< logWARNING
+    logINFO,   // !< logINFO
+    logDEBUG,  // !< logDEBUG
+    logDEBUG1,  // !< logDEBUG1
+    logDEBUG2,  // !< logDEBUG2
+    logDEBUG3,  // !< logDEBUG3
+    logDEBUG4   // !< logDEBUG4
+};
+
+/**
+ * @brief class for logging reports. The usage of this log class is described on page \ref logging
+ */
+class Log {
+ public:
+    /**
+     * default constructor
+     */
+    Log() = default;
+    /**
+     * copy constructor deleted
+     */
+    Log(const Log&) = delete;
+    /**
+     * copy operator deleted
+     */
+    Log& operator =(const Log&) = delete;
 
     /**
-     * @brief class for logging reports. The usage of this log class is described on page \ref logging
+     * destructor which writes the message to the stream
      */
-    class Log {
-     public:
-      /**
-       * default constructor
-       */
-      Log()=default;
-      /**
-       * copy constructor deleted
-       */
-      Log(const Log&)=delete;
-      /**
-       * copy operator deleted
-       */
-      Log& operator =(const Log&)=delete;
-      /**
-       * destructor which writes the message to the stream
-       */
-      virtual ~Log();
+    virtual ~Log();
 
-      /**
-       * takes the log message and stores it in the buffer
-       * @param level The level of the log message
-       * @return  a ostringstream
-       */
-      std::ostringstream& writeReport(LogLevel level = logINFO);
+    /**
+     * takes the log message and stores it in the buffer
+     * @param level The level of the log message
+     * @return  a ostringstream
+     */
+    std::ostringstream& writeReport(LogLevel level = logINFO);
 
-      /**
-       * The Stream it writes to the standard is std::cerr
-       * @return The Stream it writes to
-       */
-      static std::shared_ptr<std::ostream> getStream();
+    /**
+     * The Stream it writes to the standard is std::cerr
+     * @return The Stream it writes to
+     */
+    static std::shared_ptr<std::ostream> getStream();
 
-      /**
-       * Setter for the stream
-       * @param pStream The Stream the log class should print to.
-       */
-      static void setStream(std::shared_ptr<std::ostream> pStream);
+    /**
+     * Setter for the stream
+     * @param pStream The Stream the log class should print to.
+     */
+    static void setStream(std::shared_ptr<std::ostream> pStream);
 
-      /**
-       * getter for the current report level
-       * @return the current report level
-       */
-      static LogLevel getReportingLevel();
+    /**
+     * getter for the current report level
+     * @return the current report level
+     */
+    static LogLevel getReportingLevel();
 
-      /**
-       * setter for the report level
-       * @param level The new report level
-       */
-      static void setReportingLevel(LogLevel level);
+    /**
+     * setter for the report level
+     * @param level The new report level
+     */
+    static void setReportingLevel(LogLevel level);
 
-     private:
+ private:
+    /**
+     * writes the output to the stream
+     * @param msg The message written to the stream
+     */
+    static void writeOutput(const std::string& msg);
 
+    /**
+     * The current reporting level of the Log, all messages with a level below this level
+     * are printed the rest is ignored
+     */
+    static LogLevel reportingLevel_;
 
-      /**
-       * writes the output to the stream
-       * @param msg The message written to the stream
-       */
-      static void writeOutput(const std::string& msg);
-
-      /**
-       * The current reporting level of the Log, all messages with a level below this level
-       * are printed the rest is ignored
-       */
-      static LogLevel reportingLevel_;
-
-      /**
-       * pointer to the stream
-       */
-      static std::shared_ptr<std::ostream> pStream_;
-      /**
-       * The buffer for the log message
-       */
-      std::ostringstream buffer_;
-    };
-
-
-} /* end namespace */
+    /**
+     * pointer to the stream
+     */
+    static std::shared_ptr<std::ostream> pStream_;
+    /**
+     * The buffer for the log message
+     */
+    std::ostringstream buffer_;
+};
+}  /* end namespace */
 
 /**
  * macro to allow easier generation of log messages.
@@ -222,7 +220,7 @@ namespace UtilLib{
  */
 #define LOG(level) \
     if (level > UtilLib::Log::getReportingLevel() || !UtilLib::Log::getStream()) ; \
-else UtilLib::Log().writeReport(level)
+    else UtilLib::Log().writeReport(level)
 
 
 
