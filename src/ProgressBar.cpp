@@ -77,6 +77,7 @@ void ProgressBar::displayTic() {
         std::setprecision(3) << 0.0 << " sec" << "\x1b[K\x1b[u";
         if (tic_ < 51)
             outputStream_ << '*';
+
         outputStream_ << "\noverall runtime: " << std::setw(6) <<
         std::setprecision(3) << wholeTime_.stop() << " sec" << std::endl;
     }
@@ -99,7 +100,7 @@ void ProgressBar::displayPercentage() {
     outputStream_ << "\x1b[s\x1b[A\x1b[A\x1b[A\r" << "progress: " << std::setw(
             4) << std::setprecision(3)
                   << percentage << "%   "
-                  << "estimated time remaining:" << std::setw(6) <<
+                  << "estimated time remaining: " << std::setw(6) <<
     std::setprecision(3) << remainingTime << " sec" << "\x1b[K\x1b[u" <<
     std::flush;
 }
