@@ -42,25 +42,29 @@ class ProgressBar {
      * Display appropriate progress tic if needed.
      * @param increment
      * @post count()== original count() + increment
+     * @return The increased integer
      */
     unsigned int operator+=(unsigned int increment);
 
     /**
-     * Prefix operator
+     * @brief Prefix operator
+     * @return the increased integer
      */
     unsigned int operator++();
 
     /**
-     * Postfix operator
+     * @brief Postfix operator
+     * @param i the increased integer
+     * @return the increased integer
      */
     unsigned int operator++(int i);
 
  private:
-    unsigned int count_ = 0;  // /The current count
-    unsigned int expectedCount_;  // /The number of counts
-    unsigned int nextTicCount_ = 0;  // /When the next tic should be generated
-    unsigned int updateCount_ = 0;  // /When the percentage should be updated
-    unsigned int tic_ = 0;  // /The current tic
+    unsigned int count_ = 0;  ///< The current count
+    unsigned int expectedCount_;  ///< The number of counts
+    unsigned int nextTicCount_ = 0;  ///< When the next tic should be generated
+    unsigned int updateCount_ = 0;  ///< When the percentage should be updated
+    unsigned int tic_ = 0;  ///< The current tic
     /**
      * The stream where the progress Bar is printed to.
      */

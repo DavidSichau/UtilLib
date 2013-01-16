@@ -65,6 +65,9 @@ std::string logLevelToString(const LogLevel& level) {
 }
 
 struct null_deleter {
+    /**
+     * @brief functor to avoid deletion of an object that couldnot be deleted nothing at delete
+     */
     void operator()(void const*) const {}
 };
 }
