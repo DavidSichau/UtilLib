@@ -150,6 +150,7 @@ class Log {
     Log(const Log&) = delete;
     /**
      * copy operator deleted
+     * @return the copy of log
      */
     Log& operator =(const Log&) = delete;
 

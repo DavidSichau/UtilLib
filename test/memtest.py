@@ -13,13 +13,19 @@ from sys import exit, stdout, platform
 from subprocess import Popen, PIPE
 from xml.dom.minidom import parse, parseString
 
+##
+# @brief filter for valgridn output
+# @param line a line
+# @return the line if not garbage
 def garbage(line):
-    ''' filter for valgridn output'''
     return not line.startswith('<unknown program name>') and \
-           not line.startswith('profiling:')
+            not line.startswith('profiling:')
 
+##
+# @brief run valgrind-memcheck on test in testdir. return xml output as string
+# @param test the test executed
+# @return the filtered output of valgrind
 def memcheck(test):
-    ''' run valgrind-memcheck on test in testdir. return xml output as string '''
     v = find_valgrind()
     if platform == "darwin": #mac stuff
         cmd = v+" --tool=memcheck --dsymutil=yes --child-silent-after-fork=yes --leak-check=full --xml=yes --xml-fd=3 --num-callers=50 " + test + " 3>memcheck.tmp"
@@ -30,16 +36,25 @@ def memcheck(test):
     out = filter(garbage, out)
     return ''.join(out)
 
+##
+# @brief  extract child data for tag.
+# @param dom the dom
+# @param tag the tag
+# @return None if not found
 def xml_child_data(dom,tag):
-    ''' extract child data for tag. return None if not found'''
     elem = dom.getElementsByTagName(tag)
     val = None
     if len(elem) != 0:
         val = elem[0].firstChild.data
     return val
 
+##
+# @brief single entry in a memory error backtrace
 class Frame:
-    ''' single entry in a memory error backtrace '''
+    ##
+    # @brief constructor
+    # @param dom_frame the dom frame
+    # @return nothing
     def __init__(self, dom_frame):
         '''<frame>
         <ip>0x62ACDBF</ip>
@@ -54,6 +69,9 @@ class Frame:
         self.sfile = xml_child_data(dom_frame, 'file')
         self.sline = xml_child_data(dom_frame, 'line')
 
+    ##
+    # @brief the conversion to string operator
+    # @return The converted string
     def __str__(self):
         out = ""
         if self.func:
@@ -63,8 +81,13 @@ class Frame:
         out += "\n"
         return out
 
+##
+# @brief valgrind memcheck stack trace
 class BackTrace:
-    ''' valgrind memcheck stack trace '''
+    ##
+    # @brief the constructor
+    # @param errordom the error dom
+    # @return nothing
     def __init__(self, errordom):
         self.dom = errordom
         self.kind = self.dom.getElementsByTagName('kind')[0].firstChild.data
@@ -75,20 +98,27 @@ class BackTrace:
                 self.stack.append(Frame(frame))
         self.what = xml_child_data(self.dom, 'what')
 
+    ##
+    # @brief checks if it is definetively lost
+    # @return true if definetively lost entry
     def is_definitely_lost(self):
         return self.kind == u'Leak_DefinitelyLost'
 
-
+    ##
+    # @brief the conversion to string operator
+    # @return The converted string
     def __str__(self):
         out = ""
         for frame in self.stack:
             out += str(frame)
         return out
 
+##
+# @brief extract the interesting memcheck errors from the xml-string input 'out'
+# @param out the xml-string input
+# @return return these as a list
 def parse_errors(out):
-    ''' extract the interesting memcheck errors from the xml-string input 'out'.
-    return these as a list '''
-    xmldoc = parseString(out)
+xmldoc = parseString(out)
     errors = xmldoc.getElementsByTagName('error')
     errors_ = []
     for error in errors:
@@ -97,7 +127,10 @@ def parse_errors(out):
             errors_.append(bt)
     return errors_
 
-#from: http://mail.python.org/pipermail/python-list/2002-August/157829.html
+##
+# @brief from: http://mail.python.org/pipermail/python-list/2002-August/157829.html
+# @param filename the filename
+# @return true if exists
 def which (filename):
     if not environ.has_key('PATH') or environ['PATH'] == '':
         p = defpath
@@ -112,6 +145,9 @@ def which (filename):
             return f
     return None
 
+##
+# @brief searches for valgrind
+# @return the path to valgrind
 def find_valgrind():
     valgrind = which('valgrind')
     if valgrind != None:
@@ -120,6 +156,10 @@ def find_valgrind():
         print ("valgrind NOT FOUND")
         exit(-1)
 
+##
+# @brief runs a test
+# @param exe_name the executable path
+# @return nothing
 def run_single_test(exe_name):
     if access(exe_name, X_OK):
         pass
@@ -148,4 +188,4 @@ if __name__ == '__main__':
     else:
         print "usage: ./runMemcheck.py test_executable"
         exit(-1)
-        
+
