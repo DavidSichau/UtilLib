@@ -19,13 +19,12 @@
  *
  */
 
-#ifndef UTILIB_LOG_HPP_MPIPROXY_HPP_
-#define UTILIB_LOG_HPP_MPIPROXY_HPP_
+#ifndef UTILIB_MPIPROXY_HPP_
+#define UTILIB_MPIPROXY_HPP_
 #include <UtilLib/config.hpp>
 #include <UtilLib/include/Log.hpp>
 #include <UtilLib/include/Exception.hpp>
 #include <UtilLib/include/Singleton.hpp>
-#include <vector>
 #ifdef ENABLE_MPI
 #include <boost/mpi/collectives.hpp>
 #include <boost/mpi/communicator.hpp>
@@ -33,6 +32,8 @@
 #include <boost/mpi/request.hpp>
 namespace mpi = boost::mpi;
 #endif
+#include <vector>
+
 
 namespace UtilLib {
 /**
@@ -188,4 +189,4 @@ inline MPIProxy_& MPIProxy() {
     return MPIProxySingleton::instance();
 }
 } /* end namespace */
-#endif /* UTILIB_LOG_HPP_MPIPROXY_HPP_ */
+#endif /* UTILIB_MPIPROXY_HPP_ */
