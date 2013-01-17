@@ -64,6 +64,9 @@ std::string logLevelToString(const LogLevel& level) {
     return std::string("");
 }
 
+/**
+ * @brief a delete which does not delete anything
+ */
 struct null_deleter {
     /**
      * @brief functor to avoid deletion of an object that couldnot be deleted nothing at delete
@@ -77,10 +80,10 @@ struct null_deleter {
  */
 LogLevel Log::reportingLevel_ = DEBUGLEVEL;
 
-
+/// @cond
 // Default the log is printed to std::cerr. To avoid the deletion of std::cerr a null_deleter is provided.
 std::shared_ptr<std::ostream> Log::pStream_(&std::cerr, null_deleter());
-
+/// @endcond
 std::shared_ptr<std::ostream> Log::getStream() {
     return pStream_;
 }

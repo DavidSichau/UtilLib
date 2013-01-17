@@ -26,6 +26,9 @@
 #include <sys/time.h>
 
 namespace UtilLib {
+/**
+ * @brief a class for timing
+ */
 class Timer {
  public:
     /**
