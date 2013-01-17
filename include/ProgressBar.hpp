@@ -26,6 +26,13 @@
 #include <iostream>
 
 namespace UtilLib {
+/**
+ * @brief a class for reporting the current simulation status.
+ * Usage:
+ * construct an object of this class with the expected count
+ * Use the increment operator on this object on each increased count
+ * Then the current progress is printed to the output
+ */
 class ProgressBar {
  public:
     /**
