@@ -28,7 +28,11 @@ ProgressBar::ProgressBar(
         unsigned int expectedCount,
         double updateInterval,
         std::ostream& os)
-    : expectedCount_(expectedCount),
+    : count_(0),
+      expectedCount_(expectedCount),
+      nextTicCount_(0),
+      updateCount_(0),
+      tic_(0),
       outputStream_(os),
       updateInterval_(updateInterval) {
     outputStream_ << "progress: " << std::setw(4) << std::setprecision(3) <<

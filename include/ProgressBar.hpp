@@ -67,11 +67,11 @@ class ProgressBar {
     unsigned int operator++(int i);
 
  private:
-    unsigned int count_ = 0;  ///< The current count
+    unsigned int count_;  ///< The current count
     unsigned int expectedCount_;  ///< The number of counts
-    unsigned int nextTicCount_ = 0;  ///< When the next tic should be generated
-    unsigned int updateCount_ = 0;  ///< When the percentage should be updated
-    unsigned int tic_ = 0;  ///< The current tic
+    unsigned int nextTicCount_;  ///< When the next tic should be generated
+    unsigned int updateCount_;  ///< When the percentage should be updated
+    unsigned int tic_;  ///< The current tic
     /**
      * The stream where the progress Bar is printed to.
      */
