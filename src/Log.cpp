@@ -89,15 +89,15 @@ std::shared_ptr<std::ostream> Log::getStream() {
 }
 
 void Log::setStream(std::shared_ptr<std::ostream> pStream) {
+    if (!pStream) {
+        throw Exception(
+                "The stream is not available. You can only set the stream to an existing one.");
+    }
     pStream_ = pStream;
 }
 
 void Log::writeOutput(const std::string& msg) {
     std::shared_ptr<std::ostream> pStream = getStream();
-    if (!pStream) {
-        throw Exception(
-                "The stream is not available. There must have an error occurred.");
-    }
     (*pStream) << msg;
     pStream->flush();
 }
