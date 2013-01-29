@@ -20,6 +20,7 @@
  */
 
 #include <UtilLib/include/ProgressBar.hpp>
+#include <UtilLib/include/TerminalColors.hpp>
 #include <iomanip>
 #include <vector>
 
@@ -74,16 +75,18 @@ void ProgressBar::displayTic() {
     nextTicCount_ = static_cast<unsigned int>((tic_ / 50.0) * expectedCount_);
     // if the end is reached make sure that the output is correct
     if (count_ == expectedCount_) {
-        outputStream_ << "\x1b[s\x1b[A\x1b[A\x1b[A\r" << "progress: " <<
-        std::setw(4) << std::setprecision(3)
-                      << static_cast<float>(100) << "%   "
-                      << "estimated time remaining:" << std::setw(6) <<
-        std::setprecision(3) << 0.0 << " sec" << "\x1b[K\x1b[u";
+        outputStream_ << STORE_CURSOR << GO_LINE_UP << GO_LINE_UP << GO_LINE_UP
+                      << GO_LINE_BEGIN << "progress: " << std::setw(4)
+                      << std::setprecision(3) << static_cast<float>(100)
+                      << "%   estimated time remaining:" << std::setw(6)
+                      << std::setprecision(3) << 0.0 << " sec" << DEL_END
+                      << RESET_CURSOR;
         if (tic_ < 51)
             outputStream_ << '*';
 
-        outputStream_ << "\noverall runtime: " << std::setw(6) <<
-        std::setprecision(3) << wholeTime_.stop() << " sec" << std::endl;
+        outputStream_ << "\noverall runtime: " << std::setw(9) << BOLDWHITE
+                      << std::setprecision(6) << wholeTime_.stop() << " sec"
+                      << RESET << std::endl;
     }
 }
 
@@ -101,11 +104,11 @@ void ProgressBar::displayPercentage() {
      * \x1b[K deletes form the cursor position to the end
      * \x1b[u restores the cursor position
      */
-    outputStream_ << "\x1b[s\x1b[A\x1b[A\x1b[A\r" << "progress: " << std::setw(
-            4) << std::setprecision(3)
-                  << percentage << "%   "
-                  << "estimated time remaining: " << std::setw(6) <<
-    std::setprecision(3) << remainingTime << " sec" << "\x1b[K\x1b[u" <<
-    std::flush;
+    outputStream_ << STORE_CURSOR << GO_LINE_UP << GO_LINE_UP << GO_LINE_UP
+                  << GO_LINE_BEGIN << "progress: " << std::setw(4)
+                  << BOLDWHITE << std::setprecision(3) << percentage << "%   "
+                  << RESET << "estimated time remaining: " << std::setw(6)
+                  << BOLDWHITE << std::setprecision(3) << remainingTime << RESET
+                  << " sec" << DEL_END << RESET_CURSOR << std::flush;
 }
 } /* end namespace  */
