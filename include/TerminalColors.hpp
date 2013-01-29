@@ -43,14 +43,13 @@ namespace UtilLib {
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
-#define SLOW_BLINK "\033[5m"
 
-#define STORE_CURSOR    "\033[s"
-#define RESET_CURSOR    "\033[u"
-#define GO_LINE_UP      "\033[A"
-#define GO_LINE_DOWN    "\033[B"
-#define GO_LINE_BEGIN   "\r"
-#define DEL_END         "\033[K"
+#define STORE_CURSOR    "\033[s"    /* Stores the current cursor position */
+#define RESET_CURSOR    "\033[u"    /* Restores the stored cursor position */
+#define GO_LINE_UP      "\033[A"    /* Goes a line up */
+#define GO_LINE_DOWN    "\033[B"    /* Goes a line down */
+#define GO_LINE_BEGIN   "\r"        /* Goes to the line start */
+#define DEL_END         "\033[K"    /* Deletes from the cursor to the end of the line */
 
 
 
