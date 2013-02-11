@@ -40,7 +40,7 @@ namespace UtilLib {
  * \section logging_introduction Introduction
  * To log a message in miind use the following macro:
  * @code{.cpp}
- * LOG(utilities::logWARNING)<<"blub: "<<42;
+ * LOG(UtilLib::logWARNING)<<"blub: "<<42;
  * @endcode
  * This would then log a message of the level logWARNING if the current reporting level
  * is higher that logWARNING. Otherwise the logging would be ignored. As this check is
@@ -51,7 +51,7 @@ namespace UtilLib {
  * To change the reporting level of the log class the following code is needed:
  *
  * @code{.cpp}
- *      utilities::Log::setReportingLevel(utilities::logWARNING);
+ *      UtilLib::Log::setReportingLevel(UtilLib::logWARNING);
  * @endcode
  *
  * This code would set the reporting level to \c logWARNING
@@ -64,7 +64,7 @@ namespace UtilLib {
  *	if (!pStream){
  *         throw UtilLib::Exception("cannot open log file.");
  *	}
- *	utilities::Log::setStream(pStream);
+ *	UtilLib::Log::setStream(pStream);
  * @endcode
  *
  * This code would redirect the log messages to the file with the name MYLOGFILENAME.
@@ -90,10 +90,10 @@ namespace UtilLib {
  * or alternatively write it the following way:
  *
  * @code{.cpp}
- * if(level > utilities::Log::getReportingLevel() || !utilities::Log::getStream()){
+ * if(level > UtilLib::Log::getReportingLevel() || !UtilLib::Log::getStream()){
  *     ;
  * }else{
- *     utilities::Log().writeReport(level)<<getNumber;
+ *     UtilLib::Log().writeReport(level)<<getNumber;
  * }
  * @endcode
  * However try to use the macro with temporary variables.
