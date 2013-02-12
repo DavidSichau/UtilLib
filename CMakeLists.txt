@@ -13,7 +13,7 @@ INCLUDE_DIRECTORIES(
 ##############################################################################
 set(UTILLIB_SRCS
 
-
+    src/geometry/Rectangle.cpp
     src/Exception.cpp
     src/ProgressBar.cpp
     src/MPIProxy.cpp
@@ -22,6 +22,10 @@ set(UTILLIB_SRCS
 )
 
 set(UTILLIB_HEADER
+
+    include/geometry/QuadTreeNode.hpp
+    include/geometry/QuadTree.hpp
+    include/geometry/Rectangle.hpp
 
     include/Exception.hpp
     include/Factory.hpp
