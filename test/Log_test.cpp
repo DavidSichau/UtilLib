@@ -29,12 +29,11 @@
 #include <UtilLib/include/MPIProxy.hpp>
 
 
-#include <cstring>
+#include <boost/test/minimal.hpp>
 #include <string>
 #include <iostream>
 #include <sstream>
 
-#include <boost/test/minimal.hpp>
 using namespace boost::unit_test;
 using namespace UtilLib;
 
@@ -51,25 +50,24 @@ void test_Destructor() {
     Log::setStream(std::dynamic_pointer_cast<std::ostream>(pStream));
 
     lg->writeReport() << "blub";
-    BOOST_CHECK(pStream->str().find("blub")!=38);
+    BOOST_CHECK(pStream->str().find("blub") != 38);
     delete lg;
     std::cout << pStream->str() << "\t" << pStream->str().find("blub")
-            << std::endl;
-    //depending on the os an additional % sign is added.
+              << std::endl;
+    // depending on the os an additional % sign is added.
     BOOST_CHECK(
-            pStream->str().find("blub")==space || pStream->str().find("blub")==space+1);
-
+            pStream->str().find("blub") == space || pStream->str().find(
+                    "blub") == space + 1);
 }
 
 void test_LogLevel() {
-    BOOST_CHECK(logERROR<logWARNING);
-    BOOST_CHECK(logWARNING<logINFO);
-    BOOST_CHECK(logINFO<logDEBUG);
-    BOOST_CHECK(logDEBUG<logDEBUG1);
-    BOOST_CHECK(logDEBUG1<logDEBUG2);
-    BOOST_CHECK(logDEBUG2<logDEBUG3);
-    BOOST_CHECK(logDEBUG3<logDEBUG4);
-
+    BOOST_CHECK(logERROR < logWARNING);
+    BOOST_CHECK(logWARNING < logINFO);
+    BOOST_CHECK(logINFO < logDEBUG);
+    BOOST_CHECK(logDEBUG < logDEBUG1);
+    BOOST_CHECK(logDEBUG1 < logDEBUG2);
+    BOOST_CHECK(logDEBUG2 < logDEBUG3);
+    BOOST_CHECK(logDEBUG3 < logDEBUG4);
 }
 
 void test_writeReport() {
@@ -77,10 +75,11 @@ void test_writeReport() {
 
     lg.writeReport() << "blub" << 42;
     BOOST_CHECK(
-            lg.buffer_.str().find("blub")==space || lg.buffer_.str().find("blub")==space+1);
+            lg.buffer_.str().find("blub") == space ||
+            lg.buffer_.str().find("blub") == space + 1);
     BOOST_CHECK(
-            lg.buffer_.str().find("42")==space+4 || lg.buffer_.str().find("42")==space+5);
-
+            lg.buffer_.str().find("42") == space + 4 ||
+            lg.buffer_.str().find("42") == space + 5);
 }
 
 void test_setGetStream() {
@@ -93,28 +92,55 @@ void test_setGetStream() {
     delete lg;
 }
 
+void test_unvalidSetGetStream() {
+    Log* lg = new Log();
+    std::shared_ptr<std::ostringstream> pStream(nullptr);
+
+    bool thrown = false;
+    try {
+        Log::setStream(std::dynamic_pointer_cast<std::ostream>(pStream));
+    } catch (const Exception& e) {
+        thrown = true;
+    }
+
+    BOOST_CHECK(thrown == true);
+    delete lg;
+}
+
 void test_writeOutput() {
     std::shared_ptr<std::ostringstream> pStream(new std::ostringstream());
 
     Log::setStream(std::dynamic_pointer_cast<std::ostream>(pStream));
     Log::writeOutput(std::string("blub"));
-    BOOST_CHECK(pStream->str().find("blub")==0);
-
+    BOOST_CHECK(pStream->str().find("blub") == 0);
 }
 
 void test_getReportingLevel() {
-    BOOST_CHECK(Log::getReportingLevel()==DEBUGLEVEL);
-
+    BOOST_CHECK(Log::getReportingLevel() == DEBUGLEVEL);
 }
 
 void test_setReportingLevel() {
-    BOOST_CHECK(Log::getReportingLevel()==DEBUGLEVEL);
+    BOOST_CHECK(Log::getReportingLevel() == DEBUGLEVEL);
     std::shared_ptr<std::ostringstream> pStream(new std::ostringstream());
 
     Log::setStream(std::dynamic_pointer_cast<std::ostream>(pStream));
-    Log::setReportingLevel(logERROR);
-    BOOST_CHECK(Log::getReportingLevel()==logERROR);
 
+    Log::setReportingLevel(logWARNING);
+    BOOST_CHECK(Log::getReportingLevel() == logWARNING);
+    Log::setReportingLevel(logINFO);
+    BOOST_CHECK(Log::getReportingLevel() == logINFO);
+    Log::setReportingLevel(logDEBUG);
+    BOOST_CHECK(Log::getReportingLevel() == logDEBUG);
+    Log::setReportingLevel(logDEBUG1);
+    BOOST_CHECK(Log::getReportingLevel() == logDEBUG1);
+    Log::setReportingLevel(logDEBUG2);
+    BOOST_CHECK(Log::getReportingLevel() == logDEBUG2);
+    Log::setReportingLevel(logDEBUG3);
+    BOOST_CHECK(Log::getReportingLevel() == logDEBUG3);
+    Log::setReportingLevel(logDEBUG4);
+    BOOST_CHECK(Log::getReportingLevel() == logDEBUG4);
+    Log::setReportingLevel(logERROR);
+    BOOST_CHECK(Log::getReportingLevel() == logERROR);
 }
 
 void test_Macro() {
@@ -125,46 +151,52 @@ void test_Macro() {
     LOG(logERROR) << "blub" << 42;
 
     BOOST_CHECK(
-            pStream->str().find("blub")==space || pStream->str().find("blub")==space+1);
-    BOOST_CHECK(pStream->str().find("42")==space+4 || pStream->str().find("42")==space+5);
+            pStream->str().find("blub") == space || pStream->str().find(
+                    "blub") == space + 1);
+    BOOST_CHECK(pStream->str().find("42") == space + 4 ||
+            pStream->str().find("42") == space + 5);
     Log::setReportingLevel(logERROR);
     std::shared_ptr<std::ostringstream> pStream1(new std::ostringstream());
 
     Log::setStream(std::dynamic_pointer_cast<std::ostream>(pStream1));
     LOG(logDEBUG) << "blub" << 42;
     BOOST_CHECK(
-            pStream1->str().find("blub")!=39 || pStream1->str().find("blub")!=40);
+            pStream1->str().find("blub") != 39 || pStream1->str().find(
+                    "blub") != 40);
     BOOST_CHECK(
-            pStream1->str().find("42")!=43 || pStream1->str().find("42")!=44);
+            pStream1->str().find("42") != 43 || pStream1->str().find("42") !=
+            44);
     std::shared_ptr<std::ostringstream> pStream2(new std::ostringstream());
 
     Log::setStream(std::dynamic_pointer_cast<std::ostream>(pStream2));
     LOG(logERROR) << "blub" << 42;
 
     BOOST_CHECK(
-            pStream2->str().find("blub")==space || pStream2->str().find("blub")==space+1);
+            pStream2->str().find("blub") == space || pStream2->str().find(
+                    "blub") == space + 1);
     BOOST_CHECK(
-            pStream2->str().find("42")==space+4 || pStream2->str().find("42")==space+5);
+            pStream2->str().find("42") == space + 4 || pStream2->str().find(
+                    "42") == space + 5);
 }
 
-
-int test_main(int argc, char* argv[]) // note the name!
-        {
-
+int test_main(
+        int argc,
+        char* argv[]) { // note the name!
 #ifdef ENABLE_MPI
     boost::mpi::environment env(argc, argv);
     // we use only two processors for this testing
 
     if (UtilLib::MPIProxy().getSize() != 2) {
-        BOOST_FAIL( "Run the test with two processes!");
+        BOOST_FAIL("Run the test with two processes!");
     }
 #endif
-// we use only two processors for this testing
+    // we use only two processors for this testing
     test_Constructor();
     test_Destructor();
     test_LogLevel();
     test_writeReport();
     test_setGetStream();
+    test_unvalidSetGetStream();
     test_writeOutput();
     test_getReportingLevel();
     test_setReportingLevel();
@@ -172,4 +204,3 @@ int test_main(int argc, char* argv[]) // note the name!
 
     return 0;
 }
-
