@@ -118,7 +118,7 @@ class BackTrace:
 # @param out the xml-string input
 # @return return these as a list
 def parse_errors(out):
-xmldoc = parseString(out)
+    xmldoc = parseString(out)
     errors = xmldoc.getElementsByTagName('error')
     errors_ = []
     for error in errors:
