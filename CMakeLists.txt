@@ -66,9 +66,9 @@ CONFIGURE_FILE(
 # testing
 #############################################################################
 
-IF(BUILD_TESTING)
+IF(BUILD_TESTS)
         ADD_SUBDIRECTORY(test)
-ENDIF(BUILD_TESTING)
+ENDIF(BUILD_TESTS)
 
 
 
