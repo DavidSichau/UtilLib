@@ -33,22 +33,21 @@ mpi::communicator world;
 #undef private
 
 
-
 #include <boost/test/minimal.hpp>
 using namespace boost::unit_test;
 using namespace UtilLib;
 
 
-
 void test_Constructor() {
-
     MPIProxy_ mpiProxy;
 #ifdef ENABLE_MPI
 
     BOOST_CHECK(mpiProxy._rank == world.rank());
     BOOST_CHECK(mpiProxy._size == world.size());
+#else
+    BOOST_CHECK(mpiProxy._rank == 0);
+    BOOST_CHECK(mpiProxy._size == 1);
 #endif
-
 }
 
 void test_Getter() {
@@ -57,18 +56,18 @@ void test_Getter() {
 
     BOOST_CHECK(mpiProxy.getRank() == world.rank());
     BOOST_CHECK(mpiProxy.getSize() == world.size());
+#else
+    BOOST_CHECK(mpiProxy.getRank() == 0);
+    BOOST_CHECK(mpiProxy.getSize() == 1);
 #endif
-
-
 }
 
-void test_Broadcast(){
-
+void test_Broadcast() {
     int blub = 0;
     BOOST_CHECK(blub == 0);
 #ifdef ENABLE_MPI
 
-    if(world.rank()==0){
+    if (world.rank() == 0) {
         blub = 9;
         BOOST_CHECK(blub == 9);
     }
@@ -83,7 +82,7 @@ void test_Broadcast(){
     BOOST_CHECK(blub == 0);
 #ifdef ENABLE_MPI
 
-    if(world.rank()==0){
+    if (world.rank() == 0) {
         blub = 9;
         BOOST_CHECK(blub == 9);
     }
@@ -93,14 +92,15 @@ void test_Broadcast(){
 #endif
 }
 
-int test_main(int argc, char* argv[]) // note the name!
-        {
+int test_main(
+        int argc,
+        char* argv[]) { // note the name!
 #ifdef ENABLE_MPI
 
     mpi::environment env(argc, argv);
 
     if (world.size() != 2) {
-        BOOST_FAIL( "Run the test with two processes!");
+        BOOST_FAIL("Run the test with two processes!");
     }
 #endif
     // we use only two processors for this testing
@@ -109,6 +109,4 @@ int test_main(int argc, char* argv[]) // note the name!
     test_Broadcast();
 
     return 0;
-
 }
-
