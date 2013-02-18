@@ -49,13 +49,13 @@ bool Rectangle::within(
         double s,
         double w,
         double e) const {
-    if (s > north)
+    if (s > north || s < south)
         return false;
-    if (n < south)
+    if (n < south || n > north)
         return false;
-    if (w > east)
+    if (w > east || w < west)
         return false;
-    if (e < west)
+    if (e < west || e > east)
         return false;
     return true;
 }

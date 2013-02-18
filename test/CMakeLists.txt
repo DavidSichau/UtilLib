@@ -139,5 +139,6 @@ ADD_MPI_TEST( Log_test.cpp)
 ADD_MPI_TEST( MPIProxy_test.cpp)
 ADD_TEST_FILE(Singleton_test.cpp)
 ADD_MPI_TEST( ProgressBar_test.cpp)
+ADD_TEST_FILE(geometry/Rectangle_test.cpp)
 
 
