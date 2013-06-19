@@ -21,18 +21,26 @@
 #include <UtilLib/include/Exception.hpp>
 #include <string>
 namespace UtilLib {
-Exception::Exception(const char* message)
-    : msg_(message)
-{}
 
-Exception::Exception(const std::string& message)
-    : msg_(message)
-{}
+    Exception::Exception(const char* message)
+        : msg_(message)
+    {}
 
-Exception::~Exception() throw()
-{}
+    Exception::Exception(const std::string& message)
+        : msg_(message)
+    {}
 
-const char* Exception::what() const throw() {
-    return msg_.c_str();
-}
+    Exception::Exception(const std::string &message, const char *file, int line)
+        : msg_(message) {
+        std::ostringstream o;
+        o << file << ":" << line << ": " << message;
+        msg_ = o.str();
+    }
+
+    Exception::~Exception() throw()
+    {}
+
+    const char* Exception::what() const throw() {
+        return msg_.c_str();
+    }
 }  // end namespace

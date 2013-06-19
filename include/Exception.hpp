@@ -1,6 +1,8 @@
 /* Copyright (c) 2013 David Sichau <mail"at"sichau"dot"eu>
  *               2010 Marc Kirchner
- *				  2005 - 2012 Marc de Kamps
+ *				 2005 - 2012 Marc de Kamps
+ *               2013 Simon Tanaka <tanakas"at"gmx"dot"ch>
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -24,12 +26,17 @@
 
 #include <exception>
 #include <string>
+#include <stdexcept>
+
+#include <iostream>
+#include <sstream>
 
 namespace UtilLib {
 /**
  * miind exception base class.
  */
 class Exception : public std::exception {
+
  public:
     /** Constructor for C-style string error messages.
      *  @param message C-style string error message.
@@ -43,6 +50,13 @@ class Exception : public std::exception {
      *  @param message The error message.
      */
     explicit Exception(const std::string& message);
+
+    /** Constructur for STL string class error messages with file and line number.
+     *  @param message an error message.
+     *  @param file a file name.
+     *  @param line a line number.
+     */
+    explicit Exception(const std::string& message,const char *file, int line);
 
     /** Destructor. Nothrow guarantee.
      * Virtual to allow for subclassing.
@@ -61,12 +75,19 @@ class Exception : public std::exception {
      */
     std::string msg_;
 };
+
+
+
+
 }  // end namespace
+
+
+
+
 
 
 /** Convenience macros.
  */
-#define lbm_fail(ERROR_MESSAGE) throw(UtilLib::Exception(ERROR_MESSAGE))
-
+#define lbm_fail(ERROR_MESSAGE) throw(UtilLib::Exception(ERROR_MESSAGE, __FILE__, __LINE__))
 
 #endif  // UTILIB_EXCEPTION_HPP_
