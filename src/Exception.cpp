@@ -1,4 +1,5 @@
 /* Copyright (c) 2013 David Sichau <mail"at"sichau"dot"eu>
+ *               2013 Simon Tanaka <tanakas"at"gmx"dot"ch>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +32,8 @@ namespace UtilLib {
     {}
 
     Exception::Exception(const std::string &message, const char *file, int line)
-        : msg_(message) {
+        : msg_(message)
+    {
         std::ostringstream o;
         o << file << ":" << line << ": " << message;
         msg_ = o.str();

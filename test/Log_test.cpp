@@ -78,8 +78,8 @@ void test_writeReport() {
             lg.buffer_.str().find("blub") == space ||
             lg.buffer_.str().find("blub") == space + 1);
     BOOST_CHECK(
-            lg.buffer_.str().find("42") == space + 4 ||
-            lg.buffer_.str().find("42") == space + 5);
+            (lg.buffer_.str().find("42") == space + 4) ||
+            (lg.buffer_.str().find("42") == space + 5));
 }
 
 void test_setGetStream() {

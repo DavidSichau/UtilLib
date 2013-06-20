@@ -31,12 +31,12 @@ class Rectangle {
  public:
   /**
    * @brief Rectangle Constructs a rectangle
-   * @param n The north border
-   * @param s The south border
-   * @param w The west border
-   * @param e The east border
+   * @param ymax The top border.
+   * @param ymin The bottom border.
+   * @param xmin The left border.
+   * @param xmax The right border.
    */
-  explicit Rectangle(double n, double s, double w, double e);
+  explicit Rectangle(double ymax, double ymin, double xmin, double xmax);
 
   /**
    * @brief Rectangle Constructs a rectangle around a point with lenght and hight size

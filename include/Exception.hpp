@@ -1,6 +1,6 @@
-/* Copyright (c) 2013 David Sichau <mail"at"sichau"dot"eu>
+/* Copyright (c) 2005 - 2012 Marc de Kamps
  *               2010 Marc Kirchner
- *				 2005 - 2012 Marc de Kamps
+ *               2013 David Sichau <mail"at"sichau"dot"eu>
  *               2013 Simon Tanaka <tanakas"at"gmx"dot"ch>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,12 +24,11 @@
 #ifndef UTILIB_EXCEPTION_HPP_
 #define UTILIB_EXCEPTION_HPP_
 
-#include <exception>
-#include <string>
-#include <stdexcept>
 
-#include <iostream>
+#include <exception>
 #include <sstream>
+#include <stdexcept>
+#include <string>
 
 namespace UtilLib {
 /**
