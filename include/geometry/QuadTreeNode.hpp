@@ -92,7 +92,7 @@ class QuadTreeNode {
     enum Regions {NORTHWEST = 0, NORTHEAST = 1, SOUTHEAST = 2, SOUTHWEST = 3};
 
     /**
-     * @brief items_ A vector of tha actual stored items
+     * @brief items_ A vector of the actual stored items
      */
     std::vector<std::shared_ptr<Node> > items_;
 
@@ -185,10 +185,13 @@ void QuadTreeNode<Node>::split() {
 template<class Node>
 QuadTreeNode<Node>* QuadTreeNode<Node>::getChild(
         double x,
-        double y) {
-    if (bounds_.pointWithinBounds(x, y)) {
+        double y)
+{
+    if (bounds_.pointWithinBounds(x, y))
+    {
         if (children_ != nullptr) {
-            for (QuadTreeNode<Node>* child :* children_) {
+            for (QuadTreeNode<Node>* child :* children_)
+            {
                 if (child->bounds_.pointWithinBounds(x, y))
                     return child->getChild(x, y);
             }

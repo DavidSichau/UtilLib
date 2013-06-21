@@ -34,26 +34,37 @@ using namespace UtilLib;
 
 class SimpleNode {
  public:
+    SimpleNode(
+            double x,
+            double y,
+            int id
+            ) : XPos_(x),
+                YPos_(y),
+                id_(id)
+    {
+    }
+
     void setPos(double x,
                 double y)
     {
-        this->_XPos = x;
-        this->_YPos = y;
+        this->XPos_ = x;
+        this->YPos_ = y;
     }
 
     double getXPos()
     {
-        return this->_XPos;
+        return this->XPos_;
     }
 
     double getYPos()
     {
-        return this->_YPos;
+        return this->YPos_;
     }
 
 private:
-    double _XPos;
-    double _YPos;
+    double XPos_;
+    double YPos_;
+    const unsigned int id_;
 };
 
 
@@ -104,28 +115,53 @@ int test_main(
         char* argv[]) {
 
     std::map<unsigned int,
-            std::shared_ptr<SimpleNode> > geometryNodes_;
+            std::shared_ptr<SimpleNode> > geometryNodes;
+
+
+    double x = 1.1;
+    double y = 2.2;
+
+
+    SimpleNode *p1 = new SimpleNode(x,y,3);
+    geometryNodes[3] = std::make_shared<SimpleNode>(*p1);
+//    geometryNodes[3] = std::make_shared<SimpleNode>(
+//            x,
+//            y,
+//            3);
+
+    SimpleNode *p2 = new SimpleNode(x,y,7);
+    geometryNodes[7] = std::make_shared<SimpleNode>(*p2);
+//    geometryNodes[7] = std::make_shared<SimpleNode>(
+//            x,
+//            y,
+//            7);
+
+    std::cout<<geometryNodes.size()<<std::endl;
+
+
 
     UtilLib::geometry::Rectangle *myRect = new UtilLib::geometry::Rectangle(5,-5,-5,5);
-
-    UtilLib::geometry::QuadTree<SimpleNode>* myTree;
-    myTree = new  UtilLib::geometry::QuadTree<SimpleNode>(*myRect);
+    UtilLib::geometry::QuadTree<SimpleNode>* myTree = new  UtilLib::geometry::QuadTree<SimpleNode>(*myRect,1);
 
 
-    std::shared_ptr<SimpleNode> pt1;
+
+    myTree->put(geometryNodes[3]);
+    myTree->put(geometryNodes[7]);
 
 
-    bool a = myTree->put(pt1);
-    std::cout<<a<<std::endl;
+    std::vector<std::shared_ptr<SimpleNode> > RE = myTree->get(*myRect);
 
-//    return of get:
-//    std::vector<std::shared_ptr<Node> >
 
+    std::cout<<"number of points in the rectangle: "<<RE.size()<<std::endl;
+
+    for (auto i: RE)
+    {
+        std::cout<<"("<<i->getXPos()<<","<<i->getYPos()<<")"<<std::endl;
+    }
 
     delete myRect;
     delete myTree;
     myRect = nullptr;
-
 
     test_Constructor();
     test_withhin();
