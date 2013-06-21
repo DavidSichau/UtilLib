@@ -1,5 +1,6 @@
 // Copyright (c) 2005 - 2012 Marc de Kamps
 //						2012 David-Matthias Sichau
+//                      2013 Simon Tanaka <tanakas"at"gmx"dot"ch>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -70,7 +71,9 @@ void test_Macros() {
     try {
         lbm_fail("abc");
     } catch (Exception& e) {
-        BOOST_CHECK(strncmp("abc", e.what(), 3)== 0);
+        std::string msg = e.what();
+        std::string partmsg = msg.substr(msg.find_last_of(":")+2); // cut away the file name and line number
+        BOOST_CHECK(strncmp("abc", partmsg.c_str(), 3)== 0);
         thrown = true;
     }
     BOOST_CHECK(thrown== true);
@@ -79,7 +82,9 @@ void test_Macros() {
     try {
         lbm_fail(abc);
     } catch (Exception& e) {
-        BOOST_CHECK(strncmp("abc", e.what(), 3)== 0);
+        std::string msg = e.what();
+        std::string partmsg = msg.substr(msg.find_last_of(":")+2); // cut away the file name and line number
+        BOOST_CHECK(strncmp("abc", partmsg.c_str(), 3)== 0);
         thrown = true;
     }
     BOOST_CHECK(thrown== true);
