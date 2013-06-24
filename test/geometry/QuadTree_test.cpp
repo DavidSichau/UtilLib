@@ -110,62 +110,86 @@ void test_pointWithinBounds() {
     BOOST_CHECK(rect.pointWithinBounds(5.0, 3.0) == false);
 }
 
-int test_main(
-        int argc,
-        char* argv[]) {
+void test_get1(void) {
+    double x = 1.1;
+    double y = 2.2;
 
     std::map<unsigned int,
             std::shared_ptr<SimpleNode> > geometryNodes;
 
 
-    double x = 1.1;
-    double y = 2.2;
-
-
     SimpleNode *p1 = new SimpleNode(x,y,3);
     geometryNodes[3] = std::make_shared<SimpleNode>(*p1);
-//    geometryNodes[3] = std::make_shared<SimpleNode>(
-//            x,
-//            y,
-//            3);
 
     SimpleNode *p2 = new SimpleNode(x,y,7);
     geometryNodes[7] = std::make_shared<SimpleNode>(*p2);
-//    geometryNodes[7] = std::make_shared<SimpleNode>(
-//            x,
-//            y,
-//            7);
-
-    std::cout<<geometryNodes.size()<<std::endl;
-
-
 
     UtilLib::geometry::Rectangle *myRect = new UtilLib::geometry::Rectangle(5,-5,-5,5);
     UtilLib::geometry::QuadTree<SimpleNode>* myTree = new  UtilLib::geometry::QuadTree<SimpleNode>(*myRect,1);
 
-
-
     myTree->put(geometryNodes[3]);
     myTree->put(geometryNodes[7]);
 
-
     std::vector<std::shared_ptr<SimpleNode> > RE = myTree->get(*myRect);
 
+    BOOST_CHECK(RE.size() == 2);
 
-    std::cout<<"number of points in the rectangle: "<<RE.size()<<std::endl;
-
-    for (auto i: RE)
-    {
-        std::cout<<"("<<i->getXPos()<<","<<i->getYPos()<<")"<<std::endl;
-    }
+    //    for (auto i: RE)
+    //    {
+    //        std::cout<<"("<<i->getXPos()<<","<<i->getYPos()<<")"<<std::endl;
+    //    }
 
     delete myRect;
     delete myTree;
     myRect = nullptr;
 
-    test_Constructor();
-    test_withhin();
-    test_pointWithinBounds();
+}
+
+void test_get2(void) {
+    double x = 1.1;
+    double y = 2.2;
+
+    std::map<unsigned int,
+            std::shared_ptr<SimpleNode> > geometryNodes;
+
+    geometryNodes[3] = std::make_shared<SimpleNode>(
+            x,
+            y,
+            3);
+
+
+    geometryNodes[7] = std::make_shared<SimpleNode>(
+            x,
+            y,
+            7);
+
+    UtilLib::geometry::Rectangle *myRect = new UtilLib::geometry::Rectangle(5,-5,-5,5);
+    UtilLib::geometry::QuadTree<SimpleNode>* myTree = new  UtilLib::geometry::QuadTree<SimpleNode>(*myRect,1);
+
+    myTree->put(geometryNodes[3]);
+    myTree->put(geometryNodes[7]);
+
+    std::vector<std::shared_ptr<SimpleNode> > RE = myTree->get(*myRect);
+
+    BOOST_CHECK(RE.size() == 2);
+
+//    for (auto i: RE)
+//    {
+//        std::cout<<"("<<i->getXPos()<<","<<i->getYPos()<<")"<<std::endl;
+//    }
+
+    delete myRect;
+    delete myTree;
+    myRect = nullptr;
+
+}
+
+int test_main(
+        int argc,
+        char* argv[]) {
+
+    test_get1();
+    test_get2();
 
     return 0;
 }
