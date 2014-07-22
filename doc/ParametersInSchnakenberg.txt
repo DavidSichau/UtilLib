@@ -1,0 +1,8 @@
+#Global Parameter file
+CurrentIterations:	0
+Iterations:	200000
+ReportStep:	1000
+SizeX:	64
+SizeY:	64
+tauFluid:	2.42
+CDESolvers: SchnakenbergD2Q4u	1.3192  SchnakenbergD2Q4v	82.42

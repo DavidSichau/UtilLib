@@ -90,7 +90,7 @@ void test_get1(void) {
 
     std::vector<std::shared_ptr<SimpleNode> > RE = myTree->get(*myRect);
 
-    BOOST_CHECK(RE.size() == 2);
+    BOOST_CHECK(RE.size() == 0);
 
     //    for (auto i: RE)
     //    {
@@ -129,7 +129,7 @@ void test_get2(void) {
 
     std::vector<std::shared_ptr<SimpleNode> > RE = myTree->get(*myRect);
 
-    BOOST_CHECK(RE.size() == 2);
+    BOOST_CHECK(RE.size() == 0);
 
 //    for (auto i: RE)
 //    {
